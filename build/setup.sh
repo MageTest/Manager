@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd /vagrant
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/.."
 
 sudo apt-get update
 
