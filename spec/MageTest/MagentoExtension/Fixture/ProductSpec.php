@@ -1,6 +1,6 @@
 <?php
 /**
- * BehatMage
+ * Magenager
  *
  * NOTICE OF LICENSE
  *
@@ -14,11 +14,7 @@
  * through the world-wide-web, please send an email
  * to <magetest@sessiondigital.com> so we can send you a copy immediately.
  *
- * @category   MageTest
- * @package    MagentoExtension
- * @subpackage Fixure
- *
- * @copyright  Copyright (c) 2012-2013 MageTest team and contributors.
+ * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
 namespace spec\MageTest\MagentoExtension\Fixture;
 
