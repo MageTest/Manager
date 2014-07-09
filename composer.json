@@ -16,7 +16,7 @@
                 "vendor/magetest/magento/src/app/code/community",
                 "vendor/magetest/magento/src/app/code/core"
             ],
-            "MageTest\\Magenager": "src"
+            "MageTest\\Manager": "src"
         }
     }
 }

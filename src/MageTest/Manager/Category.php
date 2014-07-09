@@ -1,6 +1,6 @@
 <?php
 /**
- * Magenager
+ * Manager
  *
  * NOTICE OF LICENSE
  *
@@ -16,8 +16,8 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace MageTest\Magenager;
-use MageTest\Magenager;
+namespace MageTest\Manager;
+use MageTest\Manager;
 
 /**
  * Product fixtures functionality provider

@@ -1,7 +1,7 @@
 <VirtualHost *:80>
 
-  ServerName www.magenager.dev
-  ServerAlias magenager.dev *.magenager.dev
+  ServerName www.manager.dev
+  ServerAlias manager.dev *.manager.dev
   DocumentRoot %BUILD_DIR%/vendor/magetest/magento/src
 
   <Directory "%BUILD_DIR%/vendor/magetest/magento/src">

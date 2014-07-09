@@ -8,13 +8,13 @@
          bootstrap="vendor/autoload.php"
         >
     <testsuites>
-        <testsuite name="Magenager test suite">
+        <testsuite name="Manager test suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
 
     <php>
-        <env name="BASE_URL" value="http://magenager.dev" />
+        <env name="BASE_URL" value="http://manager.dev" />
     </php>
 
     <filter>

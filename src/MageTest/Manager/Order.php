@@ -1,6 +1,6 @@
 <?php
 /**
- * Magenager
+ * Manager
  *
  * NOTICE OF LICENSE
  *
@@ -16,9 +16,9 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace MageTest\Magenager;
+namespace MageTest\Manager;
 use Mage;
-use MageTest\Magenager;
+use MageTest\Manager;
 use RuntimeException;
 
 /**
@@ -205,7 +205,7 @@ class Order implements FixtureInterface
      *
 *@param \Mage_Customer_Model_Customer $customer
      *
-*@return \MageTest\Magenager\Order
+*@return \MageTest\Manager\Order
      */
     public function setCustomer(\Mage_Customer_Model_Customer $customer)
     {
@@ -240,7 +240,7 @@ class Order implements FixtureInterface
      *
      * @param array $items
      *
-*@return \MageTest\Magenager\Order
+*@return \MageTest\Manager\Order
      */
     public function setItems(array $items)
     {
@@ -262,7 +262,7 @@ class Order implements FixtureInterface
      *
 *@param \Mage_Customer_Model_Address $address
      *
-     * @return \MageTest\Magenager\Order
+     * @return \MageTest\Manager\Order
      */
     public function setBillingAddress(\Mage_Customer_Model_Address $address)
     {
@@ -297,7 +297,7 @@ class Order implements FixtureInterface
      *
 *@param \Mage_Customer_Model_Address $address
      *
-     * @return \MageTest\Magenager\Order
+     * @return \MageTest\Manager\Order
      */
     public function setShippingAddress(\Mage_Customer_Model_Address $address)
     {
@@ -332,7 +332,7 @@ class Order implements FixtureInterface
      *
 *@param string $method
      *
-     * @return \MageTest\Magenager\Order
+     * @return \MageTest\Manager\Order
      */
     public function setShippingMethod($method)
     {
@@ -354,7 +354,7 @@ class Order implements FixtureInterface
      *
 *@param string $method
      *
-     * @return \MageTest\Magenager\Order
+     * @return \MageTest\Manager\Order
      */
     public function setPaymentMethod($method)
     {
@@ -606,7 +606,7 @@ class Order implements FixtureInterface
      *
 *@param array $data
      *
-     * @return \MageTest\Magenager\Order
+     * @return \MageTest\Manager\Order
      */
     protected function processQuote($data)
     {

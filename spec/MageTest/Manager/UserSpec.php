@@ -1,6 +1,6 @@
 <?php
 /**
- * Magenager
+ * Manager
  *
  * NOTICE OF LICENSE
  *
@@ -16,7 +16,7 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace spec\MageTest\Magenager;
+namespace spec\MageTest\Manager;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -89,7 +89,7 @@ class UserSpec extends ObjectBehavior
         $this->userModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
         $this->userModel->shouldReceive('userExists')->andReturn(false);
 
-        $this->create($data)->shouldHaveType('\MageTest\Magenager\User');
+        $this->create($data)->shouldHaveType('\MageTest\Manager\User');
     }
 
     function it_should_load_object_and_delete_it_when_delete_is_requested()

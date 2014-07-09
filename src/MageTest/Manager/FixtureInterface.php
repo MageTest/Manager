@@ -1,6 +1,6 @@
 <?php
 /**
- * Magenager
+ * Manager
  *
  * NOTICE OF LICENSE
  *
@@ -16,40 +16,34 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace MageTest\Magenager\Helper;
+namespace MageTest\Manager;
 
 /**
- * Website helper
+ * AfterScenarioListener
  *
  * @category   MageTest
  * @package    MagentoExtension
- * @subpackage Helper
+ * @subpackage Fixture
  *
  * @author     MageTest team (https://github.com/MageTest/BehatMage/contributors)
  */
-class Website
+interface FixtureInterface
 {
     /**
-     * @param null $withDefault
-     * @param bool $codeKey
+     * Create a fixture in Magento DB using the given attributes map and return its ID
      *
-     * @return array
+     * @param $attributes array attributes map using 'label' => 'value' format
+     *
+     * @return int
      */
-    public function getWebsites($withDefault = null, $codeKey = false)
-    {
-        return \Mage::app()->getWebsites($withDefault, $codeKey);
-    }
+    public function create(array $attributes);
 
     /**
-     * @return array
+     * Delete the requested fixture from Magento DB
+     *
+     * @param $identifier int object identifier
+     *
+     * @return null
      */
-    public function getWebsiteIds()
-    {
-        $ids = array();
-        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
-            $ids[] = $website->getId();
-        }
-
-        return $ids;
-    }
+    public function delete();
 }

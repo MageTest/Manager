@@ -1,6 +1,6 @@
 <?php
 /**
- * Magenager
+ * Manager
  *
  * NOTICE OF LICENSE
  *
@@ -16,9 +16,9 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace spec\MageTest\Magenager;
+namespace spec\MageTest\Manager;
 
-use MageTest\Magenager\FixtureInterface;
+use MageTest\Manager\FixtureInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
