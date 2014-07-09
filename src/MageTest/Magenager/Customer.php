@@ -16,7 +16,7 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Fixture;
+namespace MageTest\Magenager;
 
 use Mage;
 use MageTest\MagentoExtension\Helper\Website;

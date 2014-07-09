@@ -16,13 +16,11 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Fixture;
+namespace spec\MageTest\Magenager;
 
-use MageTest\MagentoExtension\Fixture\FixtureInterface;
-use MageTest\MagentoExtension\Fixture\Product;
+use MageTest\Magenager\FixtureInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
 
 /**
  * FixtureFactorySpec

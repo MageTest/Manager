@@ -16,9 +16,9 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace MageTest\MagentoExtension\Fixture;
-use MageTest\MagentoExtension\Fixture;
+namespace MageTest\Magenager;
 use Mage;
+use MageTest\Magenager;
 use RuntimeException;
 
 /**
@@ -202,8 +202,10 @@ class Order implements FixtureInterface
 
     /**
      * Set customer model
-     * @param \Mage_Customer_Model_Customer $customer
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param \Mage_Customer_Model_Customer $customer
+     *
+*@return \MageTest\Magenager\Order
      */
     public function setCustomer(\Mage_Customer_Model_Customer $customer)
     {
@@ -237,7 +239,8 @@ class Order implements FixtureInterface
      * )
      *
      * @param array $items
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@return \MageTest\Magenager\Order
      */
     public function setItems(array $items)
     {
@@ -256,8 +259,10 @@ class Order implements FixtureInterface
 
     /**
      * Set billing address
-     * @param \Mage_Customer_Model_Address $address
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param \Mage_Customer_Model_Address $address
+     *
+     * @return \MageTest\Magenager\Order
      */
     public function setBillingAddress(\Mage_Customer_Model_Address $address)
     {
@@ -289,8 +294,10 @@ class Order implements FixtureInterface
 
     /**
      * Set shipping address
-     * @param \Mage_Customer_Model_Address $address
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param \Mage_Customer_Model_Address $address
+     *
+     * @return \MageTest\Magenager\Order
      */
     public function setShippingAddress(\Mage_Customer_Model_Address $address)
     {
@@ -322,8 +329,10 @@ class Order implements FixtureInterface
 
     /**
      * Set shipping method
-     * @param string $method
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param string $method
+     *
+     * @return \MageTest\Magenager\Order
      */
     public function setShippingMethod($method)
     {
@@ -342,8 +351,10 @@ class Order implements FixtureInterface
 
     /**
      * Set payment method
-     * @param string $method
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param string $method
+     *
+     * @return \MageTest\Magenager\Order
      */
     public function setPaymentMethod($method)
     {
@@ -592,8 +603,10 @@ class Order implements FixtureInterface
 
     /**
      * Fill in and process quote before it gets converted to an order
-     * @param array $data
-     * @return \MageTest\MagentoExtension\Fixture\Order
+     *
+*@param array $data
+     *
+     * @return \MageTest\Magenager\Order
      */
     protected function processQuote($data)
     {

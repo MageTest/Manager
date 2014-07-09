@@ -16,9 +16,9 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Fixture;
+namespace spec\MageTest\Magenager;
 
-use MageTest\MagentoExtension\Helper\Website;
+use MageTest\Magenager\Helper\Website;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -206,7 +206,7 @@ class ProductSpec extends ObjectBehavior
         $this->model->shouldReceive('getId')->once()->andReturn(554)->ordered();
         $this->model->shouldReceive('getIdBySku')->andReturn(false);
 
-        $this->create($data)->shouldHaveType('\MageTest\MagentoExtension\Fixture\Product');
+        $this->create($data)->shouldHaveType('\MageTest\Magenager\Product');
     }
 
     function it_should_load_object_and_delete_it_when_delete_is_requested()

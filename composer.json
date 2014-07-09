@@ -1,10 +1,19 @@
 {
     "require-dev": {
         "phpspec/phpspec": "~2.1.0@dev",
-        "phpunit/phpunit": "~4.0.20"
+        "phpunit/phpunit": "~4.0.20",
+        "magetest/magento": "~1.9.0.1",
+        "mockery/mockery": "~0.9.1"
     },
     "autoload": {
         "psr-0": {
+            "": [
+                "vendor/magetest/magento/src/app",
+                "vendor/magetest/magento/src/lib",
+                "vendor/magetest/magento/src/app/code/local",
+                "vendor/magetest/magento/src/app/code/community",
+                "vendor/magetest/magento/src/app/code/core"
+            ],
             "MageTest\\Magenager": "src"
         }
     }

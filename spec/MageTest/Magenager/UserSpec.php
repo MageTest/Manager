@@ -16,11 +16,10 @@
  *
  * @copyright  Copyright (c) 2014 MageTest team and contributors.
  */
-namespace spec\MageTest\MagentoExtension\Fixture;
+namespace spec\MageTest\Magenager;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-
 
 /**
  * UserSpec
@@ -90,7 +89,7 @@ class UserSpec extends ObjectBehavior
         $this->userModel->shouldReceive('getId')->once()->andReturn(554)->ordered();
         $this->userModel->shouldReceive('userExists')->andReturn(false);
 
-        $this->create($data)->shouldHaveType('\MageTest\MagentoExtension\Fixture\User');
+        $this->create($data)->shouldHaveType('\MageTest\Magenager\User');
     }
 
     function it_should_load_object_and_delete_it_when_delete_is_requested()
