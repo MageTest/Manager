@@ -16,7 +16,7 @@ before_script:
   # Apache virtual host
   - sudo cp -f build/apache /etc/apache2/sites-available/manager.conf
   - sudo sed -e "s?%BUILD_DIR%?$(pwd)?g" --in-place /etc/apache2/sites-available/manager.conf
-  - sudo a2ensite manager
+  - sudo a2ensite manager.conf
   - sudo service apache2 restart
   - sudo sh -c 'echo "127.0.0.1 manager.dev" >> /etc/hosts'
 
