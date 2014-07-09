@@ -6,7 +6,6 @@ before_script:
   - sudo apt-get update
   - sudo apt-get install -y apache2 libapache2-mod-php5 php5-curl php5-gd php5-mcrypt php5-mysql
   - sudo a2enmod rewrite
-  - sudo php5enmod mcrypt
 
   # Database and sample data
   - wget -O magento-sample-data-1.6.1.0.tar.gz http://www.magentocommerce.com/downloads/assets/1.6.1.0/magento-sample-data-1.6.1.0.tar.gz
