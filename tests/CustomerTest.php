@@ -46,31 +46,37 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function createsCustomerWithEmailAndFirstName()
+    public function testCreatesCustomerWithEmailAndFirstName()
     {
         $email = 'ever.zet@gmail.com';
         $pass = 'qwerty';
 
-        $attributes = array(
-            "website_id"   => \Mage::app()->getWebsite()->getId(),
-            "store"        => \Mage::app()->getStore(),
-            "email"        => $email,
-            "firstname"    => "test",
-            "lastname"     => "test",
-            "password"     => $pass,
-            "confirmation" => $pass,
-            "status"       => 1
-        );
-
-        $this->fixtures->create($attributes);
+        $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
 
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/customer/account/login');
-        $session->getPage()->fillField('email', $email);
-        $session->getPage()->fillField('pass', $pass);
-        $session->getPage()->pressButton('send2');
+        $session->getPage()->fillField('Email Address', $email);
+        $session->getPage()->fillField('Password', $pass);
+        $session->getPage()->pressButton('Login');
 
-        $this->assertSession()->addressEquals('/customer/account');
+        $this->assertSession()->addressEquals('/customer/account/');
+    }
+
+    public function testDeletesCustomer()
+    {
+        $email = 'ever.zet@gmail.com';
+        $pass = 'qwerty';
+
+        $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
+        $this->fixtures->delete($this->customer);
+
+        $session = $this->getSession();
+        $session->visit(getenv('BASE_URL') . '/customer/account/login');
+        $session->getPage()->fillField('Email Address', $email);
+        $session->getPage()->fillField('Password', $pass);
+        $session->getPage()->pressButton('Login');
+
+        $this->assertSession()->addressEquals('/customer/account/login/');
     }
 
     /**
@@ -91,5 +97,19 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
     protected function assertSession($name = null)
     {
         return $this->mink->assertSession($name);
+    }
+
+    private function getCustomerAttributes($email, $pass)
+    {
+        return $attributes = array(
+            "website_id"   => \Mage::app()->getWebsite()->getId(),
+            "store"        => \Mage::app()->getStore(),
+            "email"        => $email,
+            "firstname"    => "test",
+            "lastname"     => "test",
+            "password"     => $pass,
+            "confirmation" => $pass,
+            "status"       => 1
+        );
     }
 }

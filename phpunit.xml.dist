@@ -14,7 +14,7 @@
     </testsuites>
 
     <php>
-        <server name="BASE_URL" value="http:://localhost:8000" />
+        <env name="BASE_URL" value="http://magenager.dev" />
     </php>
 
     <filter>

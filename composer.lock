@@ -4,7 +4,7 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "c2aee8aad9360d3837c0c7a6d4706cd9",
+    "hash": "d8e15a6d2e8a39b30fb3e380fecf1dee",
     "packages": [
 
     ],
@@ -428,16 +428,16 @@
         },
         {
             "name": "magetest/magento",
-            "version": "v1.9.0.1",
+            "version": "v1.8.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/MageTest/magento.git",
-                "reference": "e5f3fd17c61a6c3b8b2e8e88a74bece3858a2a7e"
+                "reference": "2d3fa2dd48821ef25118512023b5266a98a00562"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/MageTest/magento/zipball/e5f3fd17c61a6c3b8b2e8e88a74bece3858a2a7e",
-                "reference": "e5f3fd17c61a6c3b8b2e8e88a74bece3858a2a7e",
+                "url": "https://api.github.com/repos/MageTest/magento/zipball/2d3fa2dd48821ef25118512023b5266a98a00562",
+                "reference": "2d3fa2dd48821ef25118512023b5266a98a00562",
                 "shasum": ""
             },
             "type": "library",
@@ -468,7 +468,7 @@
                 "magento",
                 "stable"
             ],
-            "time": "2014-05-23 11:33:52"
+            "time": "2014-05-23 11:29:18"
         },
         {
             "name": "mockery/mockery",

@@ -89,7 +89,9 @@ class Customer implements FixtureInterface
     public function delete()
     {
         if ($this->model) {
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
             $this->model->delete();
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
 
