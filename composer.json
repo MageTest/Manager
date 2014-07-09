@@ -1,0 +1,11 @@
+{
+    "require-dev": {
+        "phpspec/phpspec": "~2.1.0@dev",
+        "phpunit/phpunit": "~4.0.20"
+    },
+    "autoload": {
+        "psr-0": {
+            "MageTest\\Magenager": "src"
+        }
+    }
+}
