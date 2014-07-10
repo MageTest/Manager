@@ -23,26 +23,23 @@ use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\WebAssert;
 
-class CustomerTest extends \PHPUnit_Framework_TestCase
+class CustomerTest extends WebTestCase
 {
-    private $mink;
     private $fixtures;
     private $customer;
 
     protected function setUp()
     {
-        $this->mink = new Mink(array(
-            'goutte' => new Session(new GoutteDriver())
-        ));
-        $this->mink->setDefaultSessionName('goutte');
-
+        parent::setUp();
         $this->fixtures = new Customer();
     }
 
     protected function tearDown()
     {
         if ($this->customer) {
-            $this->fixtures->delete($this->customer);
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
+            $this->fixtures->delete();
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
 
@@ -77,26 +74,6 @@ class CustomerTest extends \PHPUnit_Framework_TestCase
         $session->getPage()->pressButton('Login');
 
         $this->assertSession()->addressEquals('/customer/account/login/');
-    }
-
-    /**
-     * @param null|string $name
-     *
-     * @return Session
-     */
-    protected function getSession($name = null)
-    {
-        return $this->mink->getSession($name);
-    }
-
-    /**
-     * @param null|string $name
-     *
-     * @return WebAssert
-     */
-    protected function assertSession($name = null)
-    {
-        return $this->mink->assertSession($name);
     }
 
     private function getCustomerAttributes($email, $pass)
