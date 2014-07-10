@@ -5,7 +5,6 @@ composer install --prefer-source
 sudo apt-get install -y apache2 libapache2-mod-fastcgi
 sudo a2enmod rewrite actions fastcgi alias
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
-sudo a2enmod rewrite actions fastcgi alias
 echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
 ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
 
@@ -42,5 +41,5 @@ tar -xzf magento-sample-data-1.6.1.0.tar.gz
 mysql -uroot -e 'CREATE DATABASE 'magento';'
 mysql -uroot magento < magento-sample-data-1.6.1.0/magento_sample_data_for_1.6.1.0.sql
 
-# Install Magento CE
+# Install Magento CE 1.8
 php -f vendor/magetest/magento/src/install.php -- --license_agreement_accepted yes --locale en_GB --timezone Europe/London --default_currency GBP --db_host localhost --db_name magento --db_user root --db_pass "" --url http://manager.dev/ --skip_url_validation yes --use_rewrites yes --use_secure no --secure_base_url --use_secure_admin no --admin_firstname admin --admin_lastname admin --admin_email admin@example.com --admin_username admin --admin_password adminadmin123123
