@@ -4,7 +4,6 @@
 
 An abstraction layer that deals with test fixtures for Magento.
 
-
 ## License and Authors
 
 Authors: <https://github.com/MageTest/Manager/contributors>
