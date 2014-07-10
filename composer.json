@@ -18,5 +18,8 @@
             ],
             "MageTest\\Manager": ["src", "tests"]
         }
+    },
+    "config": {
+        "bin-dir": "bin"
     }
 }
