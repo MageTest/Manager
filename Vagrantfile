@@ -20,7 +20,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.ssh.forward_agent = true
 
   # Provision
-  config.vm.provision :shell, :path => "build/setup.sh"
+  config.vm.provision :shell, :path => "build/vm_setup.sh"
 
   # Shared folders
   require 'ffi'
