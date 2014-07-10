@@ -5,4 +5,4 @@ php:
 before_script:
   - build/travis_setup.sh
 
-script: vendor/bin/phpspec r && phpunit -v
+script: bin/phpspec r && phpunit -v
