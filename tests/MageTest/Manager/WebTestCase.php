@@ -41,4 +41,17 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
     {
         return $this->mink->assertSession($name);
     }
+
+    /**
+     * @param $email
+     * @param $pass
+     */
+    protected function customerLogin($email, $pass)
+    {
+        $session = $this->getSession();
+        $session->visit(getenv('BASE_URL') . '/customer/account/login');
+        $session->getPage()->fillField('Email Address', $email);
+        $session->getPage()->fillField('Password', $pass);
+        $session->getPage()->pressButton('Login');
+    }
 } 

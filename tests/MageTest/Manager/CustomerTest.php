@@ -50,11 +50,7 @@ class CustomerTest extends WebTestCase
 
         $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
 
-        $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/customer/account/login');
-        $session->getPage()->fillField('Email Address', $email);
-        $session->getPage()->fillField('Password', $pass);
-        $session->getPage()->pressButton('Login');
+        $this->customerLogin($email, $pass);
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
@@ -67,11 +63,7 @@ class CustomerTest extends WebTestCase
         $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
         $this->fixtures->delete($this->customer);
 
-        $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/customer/account/login');
-        $session->getPage()->fillField('Email Address', $email);
-        $session->getPage()->fillField('Password', $pass);
-        $session->getPage()->pressButton('Login');
+        $this->customerLogin($email, $pass);
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }

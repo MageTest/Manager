@@ -37,13 +37,11 @@ class AddressTest extends WebTestCase
         $this->fixtures['address']->setCustomerId($this->customerId);
         $this->address = $this->fixtures['address']->create($this->getAddressAttributes());
 
-        $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/customer/account/login');
-        $session->getPage()->fillField('Email Address', $email);
-        $session->getPage()->fillField('Password', $pass);
-        $session->getPage()->pressButton('Login');
+        $this->customerLogin($email, $pass);
 
-        file_put_contents("tmp/" . time() . ".html", $this->getSession()->getPage()->getHtml());
+        $testAddress = $this->getAddressAttributes();
+
+        $this->assertSession()->pageTextContains($testAddress['postcode']);
     }
 
     private function getCustomerAttributes($email, $pass)
