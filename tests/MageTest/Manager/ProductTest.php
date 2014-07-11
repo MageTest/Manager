@@ -25,7 +25,6 @@ class ProductTest extends WebTestCase
 
     public function testCreateSimpleProduct()
     {
-
         $this->product = $this->fixtures->create($this->getProductAttributes());
 
         $attributes = $this->getProductAttributes();
@@ -36,7 +35,21 @@ class ProductTest extends WebTestCase
         $this->assertSession()->statusCodeEquals(200);
     }
 
-    public function testDeleteSimpleProdct()
+    public function testCreateSimpleProductWithImage()
+    {
+        $attributes = $this->getProductAttributes();
+        $attributes['image'] = 'vendor/magetest/magento/src/skin/frontend/base/default/images/catalog/product/placeholder/image.jpg';
+
+        $this->product = $this->fixtures->create($attributes);
+
+        $entityId = Mage::getModel('catalog/product')->getIdBySku($attributes['sku']);
+
+        $session = $this->getSession();
+        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $entityId);
+        $this->assertSession()->elementExists('css', '#image');
+    }
+
+    public function testDeleteSimpleProduct()
     {
         $this->product = $this->fixtures->create($this->getProductAttributes());
 
@@ -53,8 +66,8 @@ class ProductTest extends WebTestCase
     private function getProductAttributes()
     {
         return array(
-            'sku'               => 'test-product-123',
-            'name'              => 'test product'
+            'sku'   => 'test-product-123',
+            'name'  => 'test product',
         );
     }
 }
