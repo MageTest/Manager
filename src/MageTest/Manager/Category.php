@@ -30,8 +30,7 @@ use MageTest\Manager;
  */
 class Category implements FixtureInterface
 {
-    const DEFAULT_ROOT_CATEGORY_ID = 1;
-    const DEFAULT_ATTRIBUTE_SET_ID = 3;
+    const DEFAULT_ROOT_CATEGORY_ID = 3;
 
     private $modelFactory = null;
     private $model;
@@ -108,7 +107,9 @@ class Category implements FixtureInterface
     public function delete()
     {
         if ($this->model) {
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
             $this->model->delete();
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
 
@@ -144,7 +145,7 @@ class Category implements FixtureInterface
             'parent_id' => self::DEFAULT_ROOT_CATEGORY_ID,
             'path' => self::DEFAULT_ROOT_CATEGORY_ID,
             'created_at' => date('Y-m-d H:i:s'),
-            'attribute_set_id' => self::DEFAULT_ATTRIBUTE_SET_ID,
+            'attribute_set_id' => $this->retrieveDefaultAttributeSetId(),
         ));
     }
 
@@ -170,4 +171,13 @@ class Category implements FixtureInterface
 
         return $category ? $category->getId() : null;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getModel()
+    {
+        return $this->model;
+    }
+
 }
