@@ -62,13 +62,5 @@ class ProductTest extends WebTestCase
         $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $entityId);
         $this->assertSession()->statusCodeEquals(404);
     }
-
-    private function getProductAttributes()
-    {
-        return array(
-            'sku'   => 'test-product-123',
-            'name'  => 'test product',
-        );
-    }
 }
  

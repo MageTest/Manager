@@ -67,18 +67,4 @@ class CustomerTest extends WebTestCase
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }
-
-    private function getCustomerAttributes($email, $pass)
-    {
-        return $attributes = array(
-            "website_id"   => \Mage::app()->getWebsite()->getId(),
-            "store"        => \Mage::app()->getStore(),
-            "email"        => $email,
-            "firstname"    => "test",
-            "lastname"     => "test",
-            "password"     => $pass,
-            "confirmation" => $pass,
-            "status"       => 1
-        );
-    }
 }
