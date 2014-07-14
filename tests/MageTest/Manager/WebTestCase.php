@@ -5,6 +5,7 @@ use Behat\Mink\Driver\GoutteDriver;
 use Behat\Mink\Mink;
 use Behat\Mink\Session;
 use Behat\Mink\WebAssert;
+use Mage;
 use Mage_Customer_Model_Customer;
 use PHPUnit_Framework_TestCase;
 
@@ -21,6 +22,11 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
             'goutte' => new Session(new GoutteDriver())
         ));
         $this->mink->setDefaultSessionName('goutte');
+    }
+
+    protected function tearDown()
+    {
+        Mage::getSingleton("core/session")->unsetAll();
     }
 
     /**
@@ -46,6 +52,21 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
     /**
      * @param $email
      * @param $pass
+     *
+     * Using credentials set in build scripts that match vm/travis setup.
+     */
+    protected function adminLogin()
+    {
+        $session = $this->getSession();
+        $session->visit(getenv('BASE_URL') . '/admin');
+        $session->getPage()->fillField('login[username]', 'admin');
+        $session->getPage()->fillField('login[password]', 'adminadmin123123');
+        $session->getPage()->pressButton('Login');
+    }
+
+    /**
+     * @param $email
+     * @param $pass
      */
     protected function customerLogin($email, $pass)
     {
@@ -64,8 +85,8 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
     protected function getCustomerAttributes($email, $pass)
     {
         return array(
-            "website_id"   => \Mage::app()->getWebsite()->getId(),
-            "store"        => \Mage::app()->getStore(),
+            "website_id"   => Mage::app()->getWebsite()->getId(),
+            "store"        => Mage::app()->getStore(),
             "email"        => $email,
             "firstname"    => "test",
             "lastname"     => "test",

@@ -32,7 +32,7 @@ use RuntimeException;
  */
 class Order implements FixtureInterface
 {
-    const DEFAULT_SHIPPING_METHOD = 'standard_standard';
+    const DEFAULT_SHIPPING_METHOD = 'flatrate_flatrate';
     const DEFAULT_PAYMENT_METHOD = 'checkmo';
 
     /**
@@ -114,8 +114,8 @@ class Order implements FixtureInterface
      *      ),
      *      'billingAddress' => Mage_Customer_Model_Address,
      *      'shippingAddress' => Mage_Customer_Model_Address,
-     *      'payment_method' => string,
-     *      'shipping_method' => string,
+     *      'paymentMethod' => string,
+     *      'shippingMethod' => string,
      *  )
      * Any or all elements can be skipped if they were previously provided via dedicated setters.
      * Addresses can be skipped as long as there is at least one address associated with the customer
@@ -131,7 +131,7 @@ class Order implements FixtureInterface
 
         $this->model = $this->createOrder();
 
-        return $this;
+        return $this->model->getId();
     }
 
     /**

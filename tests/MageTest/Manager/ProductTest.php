@@ -21,6 +21,7 @@ class ProductTest extends WebTestCase
             $this->fixtures->delete();
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
+        parent::tearDown();
     }
 
     public function testCreateSimpleProduct()

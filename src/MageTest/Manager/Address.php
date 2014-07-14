@@ -63,7 +63,7 @@ class Address implements FixtureInterface
             $this->model->save();
         }
 
-        return $this;
+        return $this->model->getId();
     }
 
     /**

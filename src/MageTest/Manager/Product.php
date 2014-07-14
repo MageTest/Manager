@@ -219,4 +219,13 @@ class Product implements FixtureInterface
             $this->model->addImageToMediaGallery($imagePath, $visibility, false, false);
         }
     }
+
+    /**
+     * Return entity id of fixture product. Needed for frontend/backend assertions
+     * @return mixed
+     */
+    public function getProductId()
+    {
+        return $this->model->getId();
+    }
 }

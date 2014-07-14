@@ -29,12 +29,13 @@ class AddressTest extends WebTestCase
             }
             Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
+        parent::tearDown();
     }
 
     public function testAssignAddressToCustomer()
     {
-        $email = 'ever.zet@gmail.com';
-        $pass = 'qwerty';
+        $email = 'test@example.com';
+        $pass = 'qwerty123';
 
         $this->customerId = $this->fixtures['customer']->create($this->getCustomerAttributes($email, $pass));
         $this->customer = Mage::getModel('customer/customer')->load($this->customerId);
@@ -47,6 +48,26 @@ class AddressTest extends WebTestCase
         $this->customerLogin($email, $pass);
 
         $this->assertSession()->pageTextContains($testAddress['postcode']);
+    }
+
+    public function testDeleteAddressOfCustomer()
+    {
+        $email = 'test@example.com';
+        $pass = 'qwerty123';
+
+        $this->customerId = $this->fixtures['customer']->create($this->getCustomerAttributes($email, $pass));
+        $this->customer = Mage::getModel('customer/customer')->load($this->customerId);
+
+        $this->fixtures['address']->setCustomer($this->customer);
+
+        $testAddress = $this->getAddressAttributes($this->customer);
+        $this->address = $this->fixtures['address']->create($testAddress);
+
+        $this->fixtures['address']->delete();
+
+        $this->customerLogin($email, $pass);
+
+        $this->assertSession()->pageTextNotContains($testAddress['postcode']);
     }
 
 }

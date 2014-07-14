@@ -41,12 +41,13 @@ class CustomerTest extends WebTestCase
             $this->fixtures->delete();
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
+        parent::tearDown();
     }
 
     public function testCreatesCustomerWithEmailAndFirstName()
     {
-        $email = 'ever.zet@gmail.com';
-        $pass = 'qwerty';
+        $email = 'test@example.com';
+        $pass = 'qwerty123';
 
         $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
 
@@ -57,11 +58,11 @@ class CustomerTest extends WebTestCase
 
     public function testDeletesCustomer()
     {
-        $email = 'ever.zet@gmail.com';
-        $pass = 'qwerty';
+        $email = 'test@example.com';
+        $pass = 'qwerty123';
 
         $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
-        $this->fixtures->delete($this->customer);
+        $this->fixtures->delete();
 
         $this->customerLogin($email, $pass);
 
