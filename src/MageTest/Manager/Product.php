@@ -19,7 +19,7 @@
 namespace MageTest\Manager;
 
 use MageTest\Manager;
-use MageTest\MagentoExtension\Helper\Website;
+use MageTest\Manager\Helper\Website;
 
 /**
  * Product fixtures functionality provider
@@ -80,15 +80,16 @@ class Product implements FixtureInterface
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
 
-        $this->setProductImageAssets($attributes);
-
         $this->model
             ->setWebsiteIds(array_map(function($website) {
                 return $website->getId();
             }, $websiteHelper->getWebsites()))
             ->setData($this->mergeAttributes($attributes))
-            ->setCreatedAt(null)
-            ->save();
+            ->setCreatedAt(null);
+
+        $this->setProductImageAssets($attributes);
+
+        $this->model->save();
 
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
@@ -103,7 +104,9 @@ class Product implements FixtureInterface
     public function delete()
     {
         if ($this->model) {
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
             $this->model->delete();
+            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
     }
 
@@ -213,9 +216,16 @@ class Product implements FixtureInterface
             }
 
             $visibility = array('thumbnail', 'small_image', 'image');
-            $this->model
-                ->addImageToMediaGallery($imagePath, $visibility, false, false)
-                ->save();
+            $this->model->addImageToMediaGallery($imagePath, $visibility, false, false);
         }
+    }
+
+    /**
+     * Return entity id of fixture product. Needed for frontend/backend assertions
+     * @return mixed
+     */
+    public function getProductId()
+    {
+        return $this->model->getId();
     }
 }
