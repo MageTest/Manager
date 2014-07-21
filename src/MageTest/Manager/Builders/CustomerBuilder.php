@@ -11,7 +11,7 @@ class CustomerBuilder implements BuilderInterface
 
     public function __construct()
     {
-        $this->model = Mage::getModel('customer/customer');
+        $this->model = $this->defaultModelFactory();
         $this->attributes = array(
             "website_id" => Mage::app()->getWebsite()->getId(),
             "store" => Mage::app()->getStore(),
@@ -27,5 +27,10 @@ class CustomerBuilder implements BuilderInterface
     public function build()
     {
         return $this->model->setData($this->attributes);
+    }
+
+    public function defaultModelFactory()
+    {
+        return \Mage::getModel('customer/customer');
     }
 }

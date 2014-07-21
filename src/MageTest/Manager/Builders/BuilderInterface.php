@@ -14,4 +14,9 @@ interface BuilderInterface {
      * Build fixture model
      */
     public function build();
+
+    /*
+     * Return the Magento model relating to the fixture
+     */
+    public function defaultModelFactory();
 } 

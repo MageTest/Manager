@@ -17,9 +17,9 @@ class CustomerBuilderSpec extends ObjectBehavior
         $this->shouldImplement('\MageTest\Manager\Builders\BuilderInterface');
     }
 
-    function it_should_return_customer_magento_model()
+    function it_should_setup_a_customer_model_factory()
     {
-        $this->build()->shouldReturnAnInstanceOf('\Mage_Customer_Model_Customer');
+        $this->defaultModelFactory()->shouldReturnAnInstanceOf('\Mage_Customer_Model_Customer');
     }
 
     function it_should_build_customer_with_required_attributes()
