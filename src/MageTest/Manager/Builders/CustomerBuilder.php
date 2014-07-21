@@ -7,11 +7,9 @@ use Mage;
 class CustomerBuilder implements BuilderInterface
 {
     private $attributes = array();
-    private $model;
 
     public function __construct()
     {
-        $this->model = $this->defaultModelFactory();
         $this->attributes = array(
             "website_id" => Mage::app()->getWebsite()->getId(),
             "store" => Mage::app()->getStore(),
@@ -26,7 +24,8 @@ class CustomerBuilder implements BuilderInterface
 
     public function build()
     {
-        return $this->model->setData($this->attributes);
+        $model = $this->defaultModelFactory();
+        return $model->setData($this->attributes);
     }
 
     public function defaultModelFactory()
