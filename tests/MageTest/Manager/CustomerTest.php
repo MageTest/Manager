@@ -22,7 +22,6 @@ Use MageTest\Manager\Builders\CustomerBuilder;
 
 class CustomerTest extends WebTestCase
 {
-    private $customer;
     private $builder;
 
     protected function setUp()
@@ -33,20 +32,20 @@ class CustomerTest extends WebTestCase
 
     public function testCreatesCustomer()
     {
-        $this->customer = $this->manager->create('customer', $this->builder);
+        $customer = $this->manager->create('customer', $this->builder);
 
-        $this->customerLogin($this->customer->getEmail(), $this->customer->getPassword());
+        $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
 
     public function testDeletesCustomer()
     {
-        $this->customer = $this->manager->create('customer', $this->builder);
+        $customer = $this->manager->create('customer', $this->builder);
 
         $this->manager->clear();
 
-        $this->customerLogin($this->customer->getEmail(), $this->customer->getPassword());
+        $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }
