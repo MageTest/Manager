@@ -1,5 +1,6 @@
 ## Manager
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MageTest/Manager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MageTest/Manager/?branch=master)
 [![Build Status](https://travis-ci.org/MageTest/Manager.svg?branch=master)](https://travis-ci.org/MageTest/Manager)
 
 An abstraction layer that deals with test fixtures for Magento.
