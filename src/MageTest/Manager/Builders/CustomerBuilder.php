@@ -25,7 +25,7 @@ class CustomerBuilder implements BuilderInterface
     public function build()
     {
         $model = $this->defaultModelFactory();
-        return $model->setData($this->attributes);
+        return $model->addData($this->attributes);
     }
 
     public function defaultModelFactory()

@@ -9,7 +9,6 @@
 namespace MageTest\Manager;
 
 use MageTest\Manager\Builders\BuilderInterface;
-use MageTest\Manager\Builders\CustomerBuilder;
 
 class FixtureManager
 {
@@ -28,7 +27,11 @@ class FixtureManager
         }
 
         $model = $builder->build();
+
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->save();
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
+
         return $this->fixtures[$name] = $model;
     }
 
