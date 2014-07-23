@@ -9,15 +9,13 @@ class AddressBuilder implements BuilderInterface
 
     private $attributes;
     private $model;
+    private $customer;
 
-    public function __construct()
+    public function __construct(\Mage_Customer_Model_Customer $customer)
     {
         $this->model = $this->defaultModelFactory();
+        $this->customer = $customer;
         $this->attributes = array(
-            'firstname' => 'test name',
-            'lastname' => 'test name',
-            'customer_id' => '1',
-            'parent_id' => '1',
             'company'   => 'Session Digital',
             'street' => 'Brown Street',
             'street1' => 'Brown Street',
@@ -39,21 +37,14 @@ class AddressBuilder implements BuilderInterface
         return Mage::getModel('customer/address');
     }
 
-    public function withCustomer(\Mage_Customer_Model_Customer $customer)
-    {
-        $this->attributes['firstname'] = $customer->getFirstname();
-        $this->attributes['lastname'] = $customer->getLastname();
-        $this->attributes['customer_id'] = $customer->getId();
-        $this->attributes['parent_id'] = $customer->getId();
-
-        return $this;
-    }
-
     /**
      * Build fixture model
      */
     public function build()
     {
+        $this->model->setCustomer($this->customer);
+        $this->attributes['firstname'] = $this->customer->getFirstname();
+        $this->attributes['lastname'] = $this->customer->getLastname();
         return $this->model->addData($this->attributes);
     }
 }

@@ -34,6 +34,7 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
     {
         $this->manager->clear();
         Mage::getSingleton("core/session")->unsetAll();
+        Mage::unregister('controller');
     }
 
     /**
