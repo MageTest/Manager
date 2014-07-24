@@ -12,6 +12,7 @@ class AddressTest extends WebTestCase
     {
         parent::setUp();
         $this->builders = array(
+            'address'  => new AddressBuilder,
             'customer' => new CustomerBuilder
         );
     }
@@ -19,7 +20,7 @@ class AddressTest extends WebTestCase
     public function testAssignAddressToCustomer()
     {
         $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', new AddressBuilder($customer));
+        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
@@ -29,7 +30,7 @@ class AddressTest extends WebTestCase
     public function testDeleteAddressOfCustomer()
     {
         $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', new AddressBuilder($customer));
+        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
 
         $postcode = $address->getPostcode();
 

@@ -14,14 +14,10 @@ use Mage;
 class OrderBuilder implements BuilderInterface
 {
     private $model;
-    private $customer;
-    private $address;
 
-    public function __construct($customer, $address)
+    public function __construct()
     {
         $this->model = $this->defaultModelFactory();
-        $this->customer = $customer;
-        $this->address = $address;
     }
 
     public function withSimpleProduct(\Mage_Catalog_Model_Product $product, $qty = 1)
@@ -32,21 +28,29 @@ class OrderBuilder implements BuilderInterface
         return $this;
     }
 
+    public function withCustomer(\Mage_Customer_Model_Customer $customer)
+    {
+        $this->model->assignCustomer($customer);
+        return $this;
+    }
+
+    public function withAddress(\Mage_Customer_Model_Address $address)
+    {
+        $this->model->getBillingAddress()->addData($address->getData());
+        $this->model->getShippingAddress()->addData($address->getData())
+            ->setCollectShippingRates(true)->collectShippingRates()
+            ->setShippingMethod('flatrate_flatrate')
+            ->setPaymentMethod('checkmo');
+
+        return $this;
+    }
+
     /**
      * Build fixture model
      */
     public function build()
     {
-        $this->model->setStoreId(Mage::app()->getStore('default')->getId());
-
-        $this->model->assignCustomer($this->customer);
-
-        $billingAddress = $this->model->getBillingAddress()->addData($this->address->getData());
-        $shippingAddress = $this->model->getShippingAddress()->addData($this->address->getData());
-
-        $shippingAddress->setCollectShippingRates(true)->collectShippingRates()
-            ->setShippingMethod('flatrate_flatrate')
-            ->setPaymentMethod('checkmo');
+        $this->model->setStoreId($this->model->getStoreId());
 
         $this->model->getPayment()->importData(array('method' => 'checkmo'));
 

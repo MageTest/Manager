@@ -15,19 +15,16 @@ class OrderTest extends WebTestCase
     {
         parent::setUp();
         $this->builders = array(
+            'address'  => new AddressBuilder(),
             'customer' => new CustomerBuilder(),
+            'order' => new OrderBuilder(),
             'product'  => new ProductBuilder()
         );
     }
 
     public function testCreateOrderWithOneProduct()
     {
-        $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', new AddressBuilder($customer));
-        $product = $this->manager->create('product', $this->builders['product']);
-
-        $orderBuilder = new OrderBuilder($customer, $address);
-        $order = $this->manager->create('order', $orderBuilder->withSimpleProduct($product));
+        $order = $this->orderWithOneProduct();
 
         $this->adminLogin();
 
@@ -38,12 +35,7 @@ class OrderTest extends WebTestCase
 
     public function testDeleteOrderWithOneProduct()
     {
-        $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', new AddressBuilder($customer));
-        $product = $this->manager->create('product', $this->builders['product']);
-
-        $orderBuilder = new OrderBuilder($customer, $address);
-        $order = $this->manager->create('order', $orderBuilder->withSimpleProduct($product));
+        $order = $this->orderWithOneProduct();
 
         $incrementId = $order->getIncrementId();
 
@@ -54,5 +46,19 @@ class OrderTest extends WebTestCase
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/admin/sales_order/index');
         $this->assertSession()->pageTextNotContains($incrementId);
+    }
+
+    /**
+     * @return mixed
+     */
+    private function orderWithOneProduct()
+    {
+        $customer = $this->manager->create('customer', $this->builders['customer']);
+        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
+        $product = $this->manager->create('product', $this->builders['product']);
+        $order = $this->manager->create('order', $this->builders['order']->withCustomer($customer)
+            ->withAddress($address)
+            ->withSimpleProduct($product));
+        return $order;
     }
 }
