@@ -18,53 +18,34 @@
  */
 namespace MageTest\Manager;
 
-use Behat\Mink\Driver\GoutteDriver;
-use Behat\Mink\Mink;
-use Behat\Mink\Session;
-use Behat\Mink\WebAssert;
+Use MageTest\Manager\Builders\CustomerBuilder;
 
 class CustomerTest extends WebTestCase
 {
-    private $fixtures;
-    private $customer;
+    private $builder;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->fixtures = new Customer();
+        $this->builder = new CustomerBuilder();
     }
 
-    protected function tearDown()
+    public function testCreatesCustomer()
     {
-        if ($this->customer) {
-            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-            $this->fixtures->delete();
-            \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
-        }
-        parent::tearDown();
-    }
+        $customer = $this->manager->create('customer', $this->builder);
 
-    public function testCreatesCustomerWithEmailAndFirstName()
-    {
-        $email = 'test@example.com';
-        $pass = 'qwerty123';
-
-        $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
-
-        $this->customerLogin($email, $pass);
+        $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
 
     public function testDeletesCustomer()
     {
-        $email = 'test@example.com';
-        $pass = 'qwerty123';
+        $customer = $this->manager->create('customer', $this->builder);
 
-        $this->customer = $this->fixtures->create($this->getCustomerAttributes($email, $pass));
-        $this->fixtures->delete();
+        $this->manager->clear();
 
-        $this->customerLogin($email, $pass);
+        $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }

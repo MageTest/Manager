@@ -2,82 +2,63 @@
 namespace MageTest\Manager;
 
 use Mage;
+use MageTest\Manager\Builders\AddressBuilder;
+use MageTest\Manager\Builders\CustomerBuilder;
+use MageTest\Manager\Builders\OrderBuilder;
+use MageTest\Manager\Builders\ProductBuilder;
 
 class OrderTest extends WebTestCase
 {
-    private $fixtures;
-    private $address;
-    private $product;
-    private $customer;
-
-    private $customerId;
-    private $productId;
-    private $orderId;
-    private $addressId;
-    private $order;
+    private $builders;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->fixtures = array(
-            'address'  => new Address(),
-            'customer' => new Customer(),
-            'product'  => new Product(),
-            'order'    => new Order()
+        $this->builders = array(
+            'address'  => new AddressBuilder(),
+            'customer' => new CustomerBuilder(),
+            'order' => new OrderBuilder(),
+            'product'  => new ProductBuilder()
         );
-    }
-
-    protected function tearDown()
-    {
-        Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
-        foreach($this->fixtures as $fixture){
-            $fixture->delete();
-        }
-        Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
-        parent::tearDown();
     }
 
     public function testCreateOrderWithOneProduct()
     {
-        $email = 'test@example.com';
-        $pass = 'qwerty123';
-
-        $this->customerId = $this->fixtures['customer']->create($this->getCustomerAttributes($email, $pass));
-        $this->customer = Mage::getModel('customer/customer')->load($this->customerId);
-
-        $this->fixtures['address']->setCustomer($this->customer);
-
-        $testAddress = $this->getAddressAttributes($this->customer);
-        $this->addressId = $this->fixtures['address']->create($testAddress);
-        $this->address = Mage::getModel('customer/address')->load($this->addressId);
-
-        $this->product = $this->fixtures['product']->create($this->getProductAttributes());
-        $this->productId = $this->product->getProductId();
-
-        $this->orderId   = $this->fixtures['order']->create($this->getOrderAttributes());
-        $this->order = Mage::getModel('sales/order')->load($this->orderId);
+        $order = $this->orderWithOneProduct();
 
         $this->adminLogin();
 
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/admin/sales_order/index');
-        $this->assertSession()->pageTextContains($this->order->getIncrementId());
+        $this->assertSession()->pageTextContains($order->getIncrementId());
     }
 
-    private function getOrderAttributes()
+    public function testDeleteOrderWithOneProduct()
     {
-        return array(
-            'customer' =>  $this->customer,
-            'items' => array(
-                array(
-                    'product' => Mage::getModel('catalog/product')->load($this->productId),
-                    'qty' => 1
-                   ),
-            ),
-           'billingAddress' => $this->address,
-           'shippingAddress' => $this->address,
-           'paymentMethod' => 'checkmo',
-           'shippingMethod' => 'flatrate_flatrate'
-       );
+        $order = $this->orderWithOneProduct();
+
+        $incrementId = $order->getIncrementId();
+
+        $this->manager->clear();
+
+        $this->adminLogin();
+
+        $session = $this->getSession();
+        $session->visit(getenv('BASE_URL') . '/admin/sales_order/index');
+        $this->assertSession()->pageTextNotContains($incrementId);
+    }
+
+    /**
+     * @return mixed
+     */
+    private function orderWithOneProduct()
+    {
+        $customer = $this->manager->create('customer', $this->builders['customer']);
+        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
+        $product = $this->manager->create('product', $this->builders['product']);
+        $order = $this->manager->create('order', $this->builders['order']->withCustomer($customer)
+            ->withAddress($address)
+            ->withSimpleProduct($product));
+        return $order;
     }
 }
