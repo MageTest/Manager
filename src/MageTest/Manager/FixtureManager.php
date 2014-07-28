@@ -8,7 +8,7 @@
 
 namespace MageTest\Manager;
 
-use MageTest\Manager\Builders\BuilderInterface;
+use MageTest\Manager\Attributes\Provider\ProviderInterface;
 
 class FixtureManager
 {
@@ -17,6 +17,12 @@ class FixtureManager
     public function __construct()
     {
         $this->fixtures = array();
+    }
+
+    public function loadFixture(ProviderInterface $attributesProvider)
+    {
+        $this->create('customer', new Builder($attributesProvider->readAttributes(),
+            $attributesProvider->getModelType()));
     }
 
     public function create($name, BuilderInterface $builder)
@@ -35,7 +41,7 @@ class FixtureManager
         return $this->fixtures[$name] = $model;
     }
 
-    public function get($name)
+    public function getFixture($name)
     {
         if(!$this->hasFixture($name))
         {

@@ -13,6 +13,6 @@ class FixtureManagerSpec extends ObjectBehavior
     function it_should_be_constructed_without_fixtures()
     {
         $this->beConstructedWith();
-        $this->shouldThrow('\InvalidArgumentException')->duringGet('invalid');
+        $this->shouldThrow('\InvalidArgumentException')->duringGetFixture('invalid');
     }
 }
