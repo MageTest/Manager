@@ -18,7 +18,6 @@ class Builder implements BuilderInterface
 
     public function build()
     {
-        $model = Mage::getModel($this->modelType)->addData($this->attributes);
         return Mage::getModel($this->modelType)->addData($this->attributes);
     }
 }
