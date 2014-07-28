@@ -33,7 +33,7 @@ class CustomerTest extends WebTestCase
 
     public function testCreatesCustomer()
     {
-        $customer = $this->manager->getFixture('customer');
+        $customer = $this->manager->getFixture('customer/customer');
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
@@ -42,7 +42,7 @@ class CustomerTest extends WebTestCase
 
     public function testDeletesCustomer()
     {
-        $customer = $this->manager->create('customer', $this->builder);
+        $customer = $this->manager->getFixture('customer/customer');
 
         $this->manager->clear();
 
