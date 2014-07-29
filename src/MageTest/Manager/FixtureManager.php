@@ -27,6 +27,8 @@ class FixtureManager
 
     public function loadFixture($fixtureFile)
     {
+        $this->fixtureFileExists($fixtureFile);
+
         $attributesProvider = $this->getAttributesProvider($fixtureFile);
 
         $attributesProvider->setFile($fixtureFile);
@@ -101,6 +103,17 @@ class FixtureManager
         {
             case 'customer/customer': return new Builders\Customer();
             case 'catalog/product': return new Builders\Product();
+        }
+    }
+
+    /**
+     * @param $fixtureFile
+     * @throws \InvalidArgumentException
+     */
+    private function fixtureFileExists($fixtureFile)
+    {
+        if (!file_exists($fixtureFile)) {
+            throw new \InvalidArgumentException("The fixture file: $fixtureFile does not exist. Please check path.");
         }
     }
 }

@@ -8,7 +8,7 @@ class ProductTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/fixtures/Product.yml';
+        $fixture = getcwd() . '/tests/MageTest/Manager/Fixtures/Product.yml';
         $this->manager->loadFixture($fixture);
     }
 

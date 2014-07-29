@@ -1,10 +1,8 @@
 customer/customer:
-  required:
     firstname: test
     lastname: test
     email: customer@example.com
     password: 123123pass
-  defaults:
     website_id: 1
     store: 1
     status: 1

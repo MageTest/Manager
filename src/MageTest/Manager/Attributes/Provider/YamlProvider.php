@@ -2,24 +2,15 @@
 
 namespace MageTest\Manager\Attributes\Provider;
 
-use Mage;
-use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Yaml\Yaml;
 
 class YamlProvider implements ProviderInterface
 {
-    private $yaml;
     private $file;
-
-    public function __construct()
-    {
-        $this->yaml = new Parser();
-    }
 
     public function readAttributes()
     {
-       $yaml = $this->getYaml();
-       $array = array_pop($yaml);
-       return array_merge($array['required'], $array['defaults']);
+       return array_pop($this->getYaml());
     }
 
     public function getModelType()
@@ -34,6 +25,6 @@ class YamlProvider implements ProviderInterface
 
     private function getYaml()
     {
-        return $this->yaml->parse(file_get_contents($this->file));
+        return $yaml = Yaml::parse($this->file);
     }
 }
