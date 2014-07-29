@@ -18,17 +18,13 @@
  */
 namespace MageTest\Manager;
 
-use MageTest\Manager\Attributes\Provider\YamlProvider;
-
 class CustomerTest extends WebTestCase
 {
-    private $builder;
-
     protected function setUp()
     {
         parent::setUp();
-        $fixtures = getcwd() . '/fixtures/Customer.yml';
-        $this->manager->loadFixture(new YamlProvider($fixtures));
+        $fixture = getcwd() . '/fixtures/Customer.yml';
+        $this->manager->loadFixture($fixture);
     }
 
     public function testCreatesCustomer()

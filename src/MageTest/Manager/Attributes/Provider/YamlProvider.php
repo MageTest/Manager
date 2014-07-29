@@ -10,10 +10,9 @@ class YamlProvider implements ProviderInterface
     private $yaml;
     private $file;
 
-    public function __construct($file)
+    public function __construct()
     {
         $this->yaml = new Parser();
-        $this->file = $file;
     }
 
     public function readAttributes()
@@ -26,6 +25,11 @@ class YamlProvider implements ProviderInterface
     public function getModelType()
     {
         return key($this->getYaml());
+    }
+
+    public function setFile($file)
+    {
+        $this->file = $file;
     }
 
     private function getYaml()

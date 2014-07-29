@@ -4,7 +4,6 @@ customer/customer:
     lastname: test
     email: customer@example.com
     password: 123123pass
-    confirmation: 123123pass
   defaults:
     website_id: 1
     store: 1

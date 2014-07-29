@@ -8,23 +8,34 @@
 
 namespace MageTest\Manager;
 
-use MageTest\Manager\Attributes\Provider\ProviderInterface;
+use MageTest\Manager\Attributes\Provider\YamlProvider;
 use MageTest\Manager\Builders\BuilderInterface;
+use MageTest\Manager\Builders\Customer;
 
 class FixtureManager
 {
     private $fixtures;
+    private $builders;
+    private $attributesProvider;
 
     public function __construct()
     {
         $this->fixtures = array();
+        $this->builders = array();
+        $this->attributesProvider = array();
     }
 
-    public function loadFixture(ProviderInterface $attributesProvider)
+    public function loadFixture($fixtureFile)
     {
-        $this->create($attributesProvider->getModelType(),
-            new Builder($attributesProvider->readAttributes(),
-            $attributesProvider->getModelType()));
+        $attributesProvider = $this->getAttributesProvider($fixtureFile);
+
+        $attributesProvider->setFile($fixtureFile);
+
+        $builder = $this->getBuilder($attributesProvider->getModelType());
+        $builder->setAttributes($attributesProvider->readAttributes());
+        $builder->setModelType($attributesProvider->getModelType());
+
+        $this->create($attributesProvider->getModelType(), $builder);
     }
 
     public function create($name, BuilderInterface $builder)
@@ -52,6 +63,10 @@ class FixtureManager
         return $this->fixtures[$name];
     }
 
+    private function hasFixture($name) {
+        return array_key_exists($name, $this->fixtures);
+    }
+
     public function clear()
     {
         foreach ($this->fixtures as $fixture) {
@@ -62,7 +77,29 @@ class FixtureManager
         $this->fixtures = array();
     }
 
-    private function hasFixture($name) {
-        return array_key_exists($name, $this->fixtures);
+    private function getAttributesProvider($file)
+    {
+        $fileType = pathinfo($file, PATHINFO_EXTENSION);
+        switch($fileType){
+            case 'yml':
+                return $this->attributesProvider[$fileType] = new YamlProvider();
+        }
+    }
+
+    private function hasBuilder($name) {
+        return array_key_exists($name, $this->builders);
+    }
+
+    private function getBuilder($modelType)
+    {
+        if($this->hasBuilder($modelType))
+        {
+            return $this->builders[$modelType];
+        }
+
+        switch($modelType)
+        {
+            case 'customer/customer': return new Customer();
+        }
     }
 }
