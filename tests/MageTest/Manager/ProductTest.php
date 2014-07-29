@@ -9,7 +9,7 @@ class ProductTest extends WebTestCase
     {
         parent::setUp();
         $fixture = getcwd() . '/fixtures/Product.yml';
-        $this->manager->loadFixture(new YamlProvider($fixture));
+        $this->manager->loadFixture($fixture);
     }
 
     public function testCreateSimpleProduct()

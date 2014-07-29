@@ -10,7 +10,7 @@ namespace MageTest\Manager;
 
 use MageTest\Manager\Attributes\Provider\YamlProvider;
 use MageTest\Manager\Builders\BuilderInterface;
-use MageTest\Manager\Builders\Customer;
+use MageTest\Manager\Builders;
 
 class FixtureManager
 {
@@ -99,7 +99,8 @@ class FixtureManager
 
         switch($modelType)
         {
-            case 'customer/customer': return new Customer();
+            case 'customer/customer': return new Builders\Customer();
+            case 'catalog/product': return new Builders\Product();
         }
     }
 }
