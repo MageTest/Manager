@@ -23,23 +23,26 @@ class FixtureManager
     public function loadFixture($fixtureFile)
     {
         $this->fixtureFileExists($fixtureFile);
-        $this->attributesProvider->readFile($fixtureFile);
+        $attributesProvider = clone $this->attributesProvider;
+        $attributesProvider->readFile($fixtureFile);
 
-        $builder = $this->getBuilder($this->attributesProvider->getModelType());
-        $builder->setAttributes($this->attributesProvider->readAttributes());
-        $builder->setModelType($this->attributesProvider->getModelType());
+        $builder = $this->getBuilder($attributesProvider->getModelType());
+        $builder->setAttributes($attributesProvider->readAttributes());
 
-        if($this->attributesProvider->hasFixtureDependencies())
+        if($attributesProvider->hasFixtureDependencies())
         {
-            foreach($this->attributesProvider->getFixtureDependencies() as $dependency)
+            foreach($attributesProvider->getFixtureDependencies() as $dependency)
             {
-
                 $withDependency = 'with' . $this->getFixtureTemplate($dependency);
-                $builder->$withDependency($this->buildFixtureDependency($dependency));
+                $builder->$withDependency($this->loadFixture(
+                    getcwd() . '/src/MageTest/Manager/Fixtures/'
+                    . $this->getFixtureTemplate($dependency)
+                    . $this->attributesProvider->getFileType()
+                ));
             }
         }
 
-        $this->create($this->attributesProvider->getModelType(), $builder);
+        return $this->create($attributesProvider->getModelType(), $builder);
     }
 
     public function create($name, BuilderInterface $builder)
@@ -67,10 +70,6 @@ class FixtureManager
         return $this->fixtures[$name];
     }
 
-    private function hasFixture($name) {
-        return array_key_exists($name, $this->fixtures);
-    }
-
     public function clear()
     {
         foreach ($this->fixtures as $fixture) {
@@ -79,6 +78,10 @@ class FixtureManager
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
         $this->fixtures = array();
+    }
+
+    private function hasFixture($name) {
+        return array_key_exists($name, $this->fixtures);
     }
 
     private function hasBuilder($name) {
@@ -94,9 +97,10 @@ class FixtureManager
 
         switch($modelType)
         {
-            case 'customer/address': return $this->builders[$modelType] = new Builders\Address();
-            case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer();
-            case 'catalog/product': return $this->builders[$modelType] = new Builders\Product();
+            case 'customer/address': return $this->builders[$modelType] = new Builders\Address($modelType);
+            case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer($modelType);
+            case 'catalog/product': return $this->builders[$modelType] = new Builders\Product($modelType);
+            case 'sales/quote': return $this->builders[$modelType] = new Builders\Order($modelType);
         }
     }
 
@@ -109,25 +113,6 @@ class FixtureManager
         if (!file_exists($fixtureFile)) {
             throw new \InvalidArgumentException("The fixture file: $fixtureFile does not exist. Please check path.");
         }
-    }
-
-    private function buildFixtureDependency($dependency)
-    {
-        $dependencyBuilder = $this->getBuilder($dependency);
-        $dependencyBuilder->setAttributes($this->getDependencyAttributes($dependency));
-        $dependencyBuilder->setModelType($dependency);
-        return $this->create($dependency, $dependencyBuilder);
-    }
-
-    private function getDependencyAttributes($dependency)
-    {
-       $dependencyAttributes = clone $this->attributesProvider;
-       $dependencyAttributes->readFile(
-           getcwd() . '/src/MageTest/Manager/Fixtures/'
-           . $this->getFixtureTemplate($dependency)
-           . $this->attributesProvider->getFileType()
-       );
-       return $dependencyAttributes->readAttributes();
     }
 
     /**

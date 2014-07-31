@@ -10,6 +10,7 @@ namespace MageTest\Manager\Builders;
 
 
 interface BuilderInterface {
+    public function __construct($modelType);
     /**
      * Build fixture model
      */

@@ -11,16 +11,9 @@ namespace MageTest\Manager\Builders;
 
 use Mage;
 
-class Order implements BuilderInterface
+class Order extends AbstractBuilder implements BuilderInterface
 {
-    private $model;
-
-    public function __construct()
-    {
-        $this->model = Mage::getModel($this->modelType);
-    }
-
-    public function withSimpleProduct(\Mage_Catalog_Model_Product $product, $qty = 1)
+    public function withProduct(\Mage_Catalog_Model_Product $product, $qty = 1)
     {
         $this->model->addProduct($product, new \Varien_Object(array(
             'qty' => $qty
@@ -39,8 +32,8 @@ class Order implements BuilderInterface
         $this->model->getBillingAddress()->addData($address->getData());
         $this->model->getShippingAddress()->addData($address->getData())
             ->setCollectShippingRates(true)->collectShippingRates()
-            ->setShippingMethod('flatrate_flatrate')
-            ->setPaymentMethod('checkmo');
+            ->setShippingMethod($this->attributes['shipping_method'])
+            ->setPaymentMethod($this->attributes['payment_method']);
 
         return $this;
     }
@@ -52,7 +45,7 @@ class Order implements BuilderInterface
     {
         $this->model->setStoreId($this->model->getStoreId());
 
-        $this->model->getPayment()->importData(array('method' => 'checkmo'));
+        $this->model->getPayment()->importData(array('method' => $this->attributes['payment_method']));
 
         $this->model->collectTotals()->save();
 
@@ -61,10 +54,5 @@ class Order implements BuilderInterface
         $service = Mage::getModel('sales/service_quote', $this->model);
         $service->submitAll();
         return $service->getOrder();
-    }
-
-    public function defaultModelFactory()
-    {
-        return Mage::getModel('sales/quote');
     }
 }

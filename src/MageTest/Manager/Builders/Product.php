@@ -8,7 +8,7 @@ class Product extends AbstractBuilder implements BuilderInterface
 {
     public function build()
     {
-        return Mage::getModel($this->modelType)->addData($this->attributes);
+        return $this->model->addData($this->attributes);
     }
 
     private function retrieveDefaultAttributeSetId()

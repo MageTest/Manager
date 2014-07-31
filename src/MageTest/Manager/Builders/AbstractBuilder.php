@@ -1,20 +1,17 @@
 <?php
 namespace MageTest\Manager\Builders;
 
+use Mage;
+
 abstract class AbstractBuilder
 {
     public $attributes;
-    public $modelType;
+    public $model;
 
-    public function __construct()
+    public function __construct($modelType)
     {
         $this->attributes = array();
-        $this->modelType = array();
-    }
-
-    public function setModelType($modelType)
-    {
-        $this->modelType = $modelType;
+        $this->model = Mage::getModel($modelType);
     }
 
     public function setAttributes($attributes)
@@ -25,7 +22,7 @@ abstract class AbstractBuilder
     public function getWebsiteIds()
     {
         $ids = array();
-        foreach (\Mage::getModel('core/website')->getCollection() as $website) {
+        foreach (Mage::getModel('core/website')->getCollection() as $website) {
             $ids[] = $website->getId();
         }
         return $ids;

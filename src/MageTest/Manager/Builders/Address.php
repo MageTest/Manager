@@ -19,7 +19,7 @@ class Address extends AbstractBuilder implements BuilderInterface
      */
     public function build()
     {
-        $model = Mage::getModel($this->modelType)->setCustomerId($this->attributes['customer_id']);
-        return $model->addData($this->attributes);
+        $this->model->setCustomerId($this->attributes['customer_id']);
+        return $this->model->addData($this->attributes);
     }
 }

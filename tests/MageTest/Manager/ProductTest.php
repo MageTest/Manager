@@ -5,45 +5,41 @@ use MageTest\Manager\Attributes\Provider\YamlProvider;
 
 class ProductTest extends WebTestCase
 {
+    private $productFixture;
+
     protected function setUp()
     {
         parent::setUp();
         $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Product.yml';
-        $this->manager->loadFixture($fixture);
+        $this->productFixture = $this->manager->loadFixture($fixture);
     }
 
     public function testCreateSimpleProduct()
     {
-        $product = $this->manager->getFixture('catalog/product');
-
         $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $product->getId());
+        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $this->productFixture->getId());
         $this->assertSession()->statusCodeEquals(200);
     }
 
     public function testDeleteSimpleProduct()
     {
-        $product = $this->manager->getFixture('catalog/product');
-
         $this->manager->clear();
 
         $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $product->getId());
+        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $this->productFixture->getId());
         $this->assertSession()->statusCodeEquals(404);
     }
 
     public function testCreateSimpleProductWithImage()
     {
-        $product = $this->manager->getFixture('catalog/product');
-
         $imageURL = getcwd() . '/tests/MageTest/Manager/Assets/370x370.jpg';
 
-        $product->setMediaGallery (array('images'=>array (), 'values'=>array ()));
-        $product->addImageToMediaGallery($imageURL, array('image','thumbnail','small_image'), false, false);
-        $product->save();
+        $this->productFixture->setMediaGallery (array('images'=>array (), 'values'=>array ()));
+        $this->productFixture->addImageToMediaGallery($imageURL, array('image','thumbnail','small_image'), false, false);
+        $this->productFixture->save();
 
         $session = $this->getSession();
-        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $product->getId());
+        $session->visit(getenv('BASE_URL') . '/catalog/product/view/id/' . $this->productFixture->getId());
         $this->assertSession()->elementExists('css', '#image');
     }
 }

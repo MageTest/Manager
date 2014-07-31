@@ -3,33 +3,33 @@ namespace MageTest\Manager;
 
 class AddressTest extends WebTestCase
 {
+    private $addressFixture;
+
     protected function setUp()
     {
         parent::setUp();
-        $addressfixture = getcwd() . '/src/MageTest/Manager/Fixtures/Address.yml';
-        $this->manager->loadFixture($addressfixture);
+        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Address.yml';
+        $this->addressFixture = $this->manager->loadFixture($fixture);
     }
 
     public function testAssignAddressToCustomer()
     {
-        $address = $this->manager->getFixture('customer/address');
         $customer = $this->manager->getFixture('customer/customer');
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
-        $this->assertSession()->pageTextContains($address->getPostcode());
+        $this->assertSession()->pageTextContains($this->addressFixture->getPostcode());
     }
 
     public function testDeleteAddressOfCustomer()
     {
-        $address = $this->manager->getFixture('customer/address');
         $customer = $this->manager->getFixture('customer/customer');
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
         $this->manager->clear();
 
-        $this->assertSession()->pageTextContains($address->getPostcode());
+        $this->assertSession()->pageTextContains($this->addressFixture->getPostcode());
     }
 }
  

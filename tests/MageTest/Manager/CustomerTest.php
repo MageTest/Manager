@@ -20,29 +20,31 @@ namespace MageTest\Manager;
 
 class CustomerTest extends WebTestCase
 {
+    private $customerFixture;
+
     protected function setUp()
     {
         parent::setUp();
         $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Customer.yml';
-        $this->manager->loadFixture($fixture);
+        $this->customerFixture = $this->manager->loadFixture($fixture);
     }
 
     public function testCreatesCustomer()
     {
-        $customer = $this->manager->getFixture('customer/customer');
+        $this->customerFixture = $this->manager->getFixture('customer/customer');
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
 
     public function testDeletesCustomer()
     {
-        $customer = $this->manager->getFixture('customer/customer');
+        $this->customerFixture = $this->manager->getFixture('customer/customer');
 
         $this->manager->clear();
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }
