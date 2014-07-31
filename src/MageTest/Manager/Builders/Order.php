@@ -11,13 +11,13 @@ namespace MageTest\Manager\Builders;
 
 use Mage;
 
-class OrderBuilder implements BuilderInterface
+class Order implements BuilderInterface
 {
     private $model;
 
     public function __construct()
     {
-        $this->model = $this->defaultModelFactory();
+        $this->model = Mage::getModel($this->modelType);
     }
 
     public function withSimpleProduct(\Mage_Catalog_Model_Product $product, $qty = 1)

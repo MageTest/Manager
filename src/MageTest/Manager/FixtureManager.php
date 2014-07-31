@@ -1,14 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jporter
- * Date: 7/18/14
- * Time: 5:06 PM
- */
-
 namespace MageTest\Manager;
 
-use MageTest\Manager\Attributes\Provider\YamlProvider;
+use MageTest\Manager\Attributes\Provider\ProviderInterface;
 use MageTest\Manager\Builders\BuilderInterface;
 use MageTest\Manager\Builders;
 
@@ -16,28 +9,37 @@ class FixtureManager
 {
     private $fixtures;
     private $builders;
+
+    /* @var \MageTest\Manager\Attributes\Provider\YamlProvider */
     private $attributesProvider;
 
-    public function __construct()
+    public function __construct(ProviderInterface $attributesProvider)
     {
         $this->fixtures = array();
         $this->builders = array();
-        $this->attributesProvider = array();
+        $this->attributesProvider = $attributesProvider;
     }
 
     public function loadFixture($fixtureFile)
     {
         $this->fixtureFileExists($fixtureFile);
+        $this->attributesProvider->readFile($fixtureFile);
 
-        $attributesProvider = $this->getAttributesProvider($fixtureFile);
+        $builder = $this->getBuilder($this->attributesProvider->getModelType());
+        $builder->setAttributes($this->attributesProvider->readAttributes());
+        $builder->setModelType($this->attributesProvider->getModelType());
 
-        $attributesProvider->setFile($fixtureFile);
+        if($this->attributesProvider->hasFixtureDependencies())
+        {
+            foreach($this->attributesProvider->getFixtureDependencies() as $dependency)
+            {
 
-        $builder = $this->getBuilder($attributesProvider->getModelType());
-        $builder->setAttributes($attributesProvider->readAttributes());
-        $builder->setModelType($attributesProvider->getModelType());
+                $withDependency = 'with' . $this->getFixtureTemplate($dependency);
+                $builder->$withDependency($this->buildFixtureDependency($dependency));
+            }
+        }
 
-        $this->create($attributesProvider->getModelType(), $builder);
+        $this->create($this->attributesProvider->getModelType(), $builder);
     }
 
     public function create($name, BuilderInterface $builder)
@@ -79,15 +81,6 @@ class FixtureManager
         $this->fixtures = array();
     }
 
-    private function getAttributesProvider($file)
-    {
-        $fileType = pathinfo($file, PATHINFO_EXTENSION);
-        switch($fileType){
-            case 'yml':
-                return $this->attributesProvider[$fileType] = new YamlProvider();
-        }
-    }
-
     private function hasBuilder($name) {
         return array_key_exists($name, $this->builders);
     }
@@ -101,8 +94,9 @@ class FixtureManager
 
         switch($modelType)
         {
-            case 'customer/customer': return new Builders\Customer();
-            case 'catalog/product': return new Builders\Product();
+            case 'customer/address': return $this->builders[$modelType] = new Builders\Address();
+            case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer();
+            case 'catalog/product': return $this->builders[$modelType] = new Builders\Product();
         }
     }
 
@@ -115,5 +109,33 @@ class FixtureManager
         if (!file_exists($fixtureFile)) {
             throw new \InvalidArgumentException("The fixture file: $fixtureFile does not exist. Please check path.");
         }
+    }
+
+    private function buildFixtureDependency($dependency)
+    {
+        $dependencyBuilder = $this->getBuilder($dependency);
+        $dependencyBuilder->setAttributes($this->getDependencyAttributes($dependency));
+        $dependencyBuilder->setModelType($dependency);
+        return $this->create($dependency, $dependencyBuilder);
+    }
+
+    private function getDependencyAttributes($dependency)
+    {
+       $dependencyAttributes = clone $this->attributesProvider;
+       $dependencyAttributes->readFile(
+           getcwd() . '/src/MageTest/Manager/Fixtures/'
+           . $this->getFixtureTemplate($dependency)
+           . $this->attributesProvider->getFileType()
+       );
+       return $dependencyAttributes->readAttributes();
+    }
+
+    /**
+     * @param $dependency
+     */
+    private function getFixtureTemplate($dependency)
+    {
+        $fixtureTemplate = explode('/', $dependency);
+        return ucfirst($fixtureTemplate[1]);
     }
 }

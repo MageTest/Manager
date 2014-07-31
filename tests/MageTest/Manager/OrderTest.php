@@ -1,11 +1,5 @@
 <?php
-namespace MageTest\Manager;
-
-use Mage;
-use MageTest\Manager\Builders\AddressBuilder;
-use MageTest\Manager\Builders\CustomerBuilder;
-use MageTest\Manager\Builders\OrderBuilder;
-use MageTest\Manager\Builders\ProductBuilder;
+/*namespace MageTest\Manager;
 
 class OrderTest extends WebTestCase
 {
@@ -48,9 +42,6 @@ class OrderTest extends WebTestCase
         $this->assertSession()->pageTextNotContains($incrementId);
     }
 
-    /**
-     * @return mixed
-     */
     private function orderWithOneProduct()
     {
         $customer = $this->manager->create('customer', $this->builders['customer']);
@@ -61,4 +52,4 @@ class OrderTest extends WebTestCase
             ->withSimpleProduct($product));
         return $order;
     }
-}
+}*/

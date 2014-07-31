@@ -23,7 +23,7 @@ class CustomerTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/tests/MageTest/Manager/Fixtures/Customer.yml';
+        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Customer.yml';
         $this->manager->loadFixture($fixture);
     }
 

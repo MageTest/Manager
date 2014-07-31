@@ -6,25 +6,37 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlProvider implements ProviderInterface
 {
-    private $file;
+    private $yaml;
+
+    public function readFile($file)
+    {
+        $this->yaml = Yaml::parse($file);
+    }
 
     public function readAttributes()
     {
-       return array_pop($this->getYaml());
+       return reset($this->yaml);
+    }
+
+    public function getFileType()
+    {
+        return '.yml';
     }
 
     public function getModelType()
     {
-        return key($this->getYaml());
+        $key = explode(' (', key($this->yaml));
+        return $key[0];
     }
 
-    public function setFile($file)
+    public function getFixtureDependencies()
     {
-        $this->file = $file;
+        $beforeBracket = substr(key($this->yaml), strrpos(key($this->yaml), '(')  + 1);
+        return explode(' ', substr( $beforeBracket, 0, strpos( $beforeBracket, ')')));
     }
 
-    private function getYaml()
+    public function hasFixtureDependencies()
     {
-        return $yaml = Yaml::parse($this->file);
+        return (strpos(key($this->yaml), '(') === false) ? false : true;
     }
 }

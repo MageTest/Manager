@@ -1,26 +1,19 @@
 <?php
 namespace MageTest\Manager;
 
-Use MageTest\Manager\Builders\CustomerBuilder;
-Use MageTest\Manager\Builders\AddressBuilder;
-
 class AddressTest extends WebTestCase
 {
-    private $builders;
-
     protected function setUp()
     {
         parent::setUp();
-        $this->builders = array(
-            'address'  => new AddressBuilder,
-            'customer' => new CustomerBuilder
-        );
+        $addressfixture = getcwd() . '/src/MageTest/Manager/Fixtures/Address.yml';
+        $this->manager->loadFixture($addressfixture);
     }
 
     public function testAssignAddressToCustomer()
     {
-        $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
+        $address = $this->manager->getFixture('customer/address');
+        $customer = $this->manager->getFixture('customer/customer');
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
@@ -29,16 +22,14 @@ class AddressTest extends WebTestCase
 
     public function testDeleteAddressOfCustomer()
     {
-        $customer = $this->manager->create('customer', $this->builders['customer']);
-        $address = $this->manager->create('address', $this->builders['address']->withCustomer($customer));
-
-        $postcode = $address->getPostcode();
-
-        $this->manager->clear();
+        $address = $this->manager->getFixture('customer/address');
+        $customer = $this->manager->getFixture('customer/customer');
 
         $this->customerLogin($customer->getEmail(), $customer->getPassword());
 
-        $this->assertSession()->pageTextNotContains($postcode);
+        $this->manager->clear();
+
+        $this->assertSession()->pageTextContains($address->getPostcode());
     }
 }
  
