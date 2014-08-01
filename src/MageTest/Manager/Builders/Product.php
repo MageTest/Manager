@@ -2,20 +2,17 @@
 
 namespace MageTest\Manager\Builders;
 
-use Mage;
-
+/**
+ * Class Product
+ * @package MageTest\Manager\Builders
+ */
 class Product extends AbstractBuilder implements BuilderInterface
 {
+    /**
+     * @return \Mage_Catalog_Model_Product
+     */
     public function build()
     {
         return $this->model->addData($this->attributes);
-    }
-
-    private function retrieveDefaultAttributeSetId()
-    {
-        return Mage::getModel($this->modelType)
-            ->getResource()
-            ->getEntityType()
-            ->getDefaultAttributeSetId();
     }
 }

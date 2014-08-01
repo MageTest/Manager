@@ -5,14 +5,27 @@ use MageTest\Manager\Attributes\Provider\ProviderInterface;
 use MageTest\Manager\Builders\BuilderInterface;
 use MageTest\Manager\Builders;
 
+/**
+ * Class FixtureManager
+ * @package MageTest\Manager
+ */
 class FixtureManager
 {
+    /**
+     * @var array
+     */
     private $fixtures;
+    /**
+     * @var array
+     */
     private $builders;
 
-    /* @var \MageTest\Manager\Attributes\Provider\YamlProvider */
+    /* @var \MageTest\Manager\Attributes\Provider\ProviderInterface */
     private $attributesProvider;
 
+    /**
+     * @param ProviderInterface $attributesProvider
+     */
     public function __construct(ProviderInterface $attributesProvider)
     {
         $this->fixtures = array();
@@ -20,6 +33,10 @@ class FixtureManager
         $this->attributesProvider = $attributesProvider;
     }
 
+    /**
+     * @param $fixtureFile
+     * @return mixed
+     */
     public function loadFixture($fixtureFile)
     {
         $this->fixtureFileExists($fixtureFile);
@@ -45,6 +62,12 @@ class FixtureManager
         return $this->create($attributesProvider->getModelType(), $builder);
     }
 
+    /**
+     * @param $name
+     * @param BuilderInterface $builder
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function create($name, BuilderInterface $builder)
     {
         if($this->hasFixture($name))
@@ -61,6 +84,11 @@ class FixtureManager
         return $this->fixtures[$name] = $model;
     }
 
+    /**
+     * @param $name
+     * @return mixed
+     * @throws \InvalidArgumentException
+     */
     public function getFixture($name)
     {
         if(!$this->hasFixture($name))
@@ -70,6 +98,9 @@ class FixtureManager
         return $this->fixtures[$name];
     }
 
+    /**
+     * Deletes all the magento fixtures
+     */
     public function clear()
     {
         foreach ($this->fixtures as $fixture) {
@@ -80,14 +111,26 @@ class FixtureManager
         $this->fixtures = array();
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     private function hasFixture($name) {
         return array_key_exists($name, $this->fixtures);
     }
 
+    /**
+     * @param $name
+     * @return bool
+     */
     private function hasBuilder($name) {
         return array_key_exists($name, $this->builders);
     }
 
+    /**
+     * @param $modelType
+     * @return Builders\Address|Builders\Customer|Builders\Order|Builders\Product
+     */
     private function getBuilder($modelType)
     {
         if($this->hasBuilder($modelType))
@@ -117,6 +160,7 @@ class FixtureManager
 
     /**
      * @param $dependency
+     * @return string
      */
     private function getFixtureTemplate($dependency)
     {

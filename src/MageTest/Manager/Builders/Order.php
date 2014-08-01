@@ -1,19 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jporter
- * Date: 7/22/14
- * Time: 5:22 PM
- */
 
 namespace MageTest\Manager\Builders;
 
-
 use Mage;
 
+/**
+ * Class Order
+ * @package MageTest\Manager\Builders
+ */
 class Order extends AbstractBuilder implements BuilderInterface
 {
-    public function withProduct(\Mage_Catalog_Model_Product $product, $qty = 1)
+    /**
+     * @param \Mage_Catalog_Model_Product $product
+     * @param int $qty
+     * @return $this
+     */
+    public function withProduct($product, $qty = 1)
     {
         $this->model->addProduct($product, new \Varien_Object(array(
             'qty' => $qty
@@ -21,13 +23,21 @@ class Order extends AbstractBuilder implements BuilderInterface
         return $this;
     }
 
-    public function withCustomer(\Mage_Customer_Model_Customer $customer)
+    /**
+     * @param \Mage_Customer_Model_Customer $customer
+     * @return $this
+     */
+    public function withCustomer($customer)
     {
         $this->model->assignCustomer($customer);
         return $this;
     }
 
-    public function withAddress(\Mage_Customer_Model_Address $address)
+    /**
+     * @param \Mage_Customer_Model_Address $address
+     * @return $this
+     */
+    public function withAddress($address)
     {
         $this->model->getBillingAddress()->addData($address->getData());
         $this->model->getShippingAddress()->addData($address->getData())

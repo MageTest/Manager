@@ -2,11 +2,17 @@
 
 namespace MageTest\Manager\Builders;
 
-use Mage;
-
+/**
+ * Class Address
+ * @package MageTest\Manager\Builders
+ */
 class Address extends AbstractBuilder implements BuilderInterface
 {
-    public function withCustomer(\Mage_Customer_Model_Customer $customer)
+    /**
+     * @param \Mage_Customer_Model_Customer $customer
+     * @return $this
+     */
+    public function withCustomer($customer)
     {
         $this->attributes['customer_id'] = $customer->getId();
         $this->attributes['firstname'] = $customer->getFirstname();
@@ -15,7 +21,7 @@ class Address extends AbstractBuilder implements BuilderInterface
     }
 
     /**
-     * Build fixture model
+     * @return \Mage_Customer_Model_Address
      */
     public function build()
     {
