@@ -18,34 +18,33 @@
  */
 namespace MageTest\Manager;
 
-Use MageTest\Manager\Builders\CustomerBuilder;
-
 class CustomerTest extends WebTestCase
 {
-    private $builder;
+    private $customerFixture;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->builder = new CustomerBuilder();
+        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Customer.yml';
+        $this->customerFixture = $this->manager->loadFixture($fixture);
     }
 
     public function testCreatesCustomer()
     {
-        $customer = $this->manager->create('customer', $this->builder);
+        $this->customerFixture = $this->manager->getFixture('customer/customer');
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
 
     public function testDeletesCustomer()
     {
-        $customer = $this->manager->create('customer', $this->builder);
+        $this->customerFixture = $this->manager->getFixture('customer/customer');
 
         $this->manager->clear();
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/login/');
     }

@@ -1,0 +1,8 @@
+customer/customer:
+    firstname: test
+    lastname: test
+    email: customer@example.com
+    password: 123123pass
+    website_id: 1
+    store: 1
+    status: 1

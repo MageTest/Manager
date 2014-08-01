@@ -2,7 +2,6 @@
 composer install --prefer-source
 
 # Packages
-sudo apt-get install -y apache2 libapache2-mod-fastcgi
 sudo a2enmod rewrite actions fastcgi alias
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
 echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini

@@ -1,26 +1,21 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: jporter
- * Date: 7/22/14
- * Time: 5:22 PM
- */
 
 namespace MageTest\Manager\Builders;
 
-
 use Mage;
 
-class OrderBuilder implements BuilderInterface
+/**
+ * Class Order
+ * @package MageTest\Manager\Builders
+ */
+class Order extends AbstractBuilder implements BuilderInterface
 {
-    private $model;
-
-    public function __construct()
-    {
-        $this->model = $this->defaultModelFactory();
-    }
-
-    public function withSimpleProduct(\Mage_Catalog_Model_Product $product, $qty = 1)
+    /**
+     * @param \Mage_Catalog_Model_Product $product
+     * @param int $qty
+     * @return $this
+     */
+    public function withProduct($product, $qty = 1)
     {
         $this->model->addProduct($product, new \Varien_Object(array(
             'qty' => $qty
@@ -28,19 +23,27 @@ class OrderBuilder implements BuilderInterface
         return $this;
     }
 
-    public function withCustomer(\Mage_Customer_Model_Customer $customer)
+    /**
+     * @param \Mage_Customer_Model_Customer $customer
+     * @return $this
+     */
+    public function withCustomer($customer)
     {
         $this->model->assignCustomer($customer);
         return $this;
     }
 
-    public function withAddress(\Mage_Customer_Model_Address $address)
+    /**
+     * @param \Mage_Customer_Model_Address $address
+     * @return $this
+     */
+    public function withAddress($address)
     {
         $this->model->getBillingAddress()->addData($address->getData());
         $this->model->getShippingAddress()->addData($address->getData())
             ->setCollectShippingRates(true)->collectShippingRates()
-            ->setShippingMethod('flatrate_flatrate')
-            ->setPaymentMethod('checkmo');
+            ->setShippingMethod($this->attributes['shipping_method'])
+            ->setPaymentMethod($this->attributes['payment_method']);
 
         return $this;
     }
@@ -52,7 +55,7 @@ class OrderBuilder implements BuilderInterface
     {
         $this->model->setStoreId($this->model->getStoreId());
 
-        $this->model->getPayment()->importData(array('method' => 'checkmo'));
+        $this->model->getPayment()->importData(array('method' => $this->attributes['payment_method']));
 
         $this->model->collectTotals()->save();
 
@@ -61,10 +64,5 @@ class OrderBuilder implements BuilderInterface
         $service = Mage::getModel('sales/service_quote', $this->model);
         $service->submitAll();
         return $service->getOrder();
-    }
-
-    public function defaultModelFactory()
-    {
-        return Mage::getModel('sales/quote');
     }
 }

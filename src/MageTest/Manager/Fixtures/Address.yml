@@ -1,0 +1,13 @@
+customer/address (customer/customer):
+  company: Session Digital
+  street: Brown Street
+  street1: Brown Street
+  city: Manchester
+  postcode:  M2 2JG
+  region: Lancashire
+  country: United Kingdom
+  country_id: GB
+  telephone: 1234567890
+  is_default_billing: 1
+  is_default_shipping: 1
+  save_in_address_book: 1

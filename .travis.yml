@@ -2,6 +2,10 @@ language: php
 php:
   - 5.3
 
+before_install:
+  - sudo apt-get update
+  - sudo apt-get install -y apache2 libapache2-mod-fastcgi
+
 before_script:
   - build/travis_setup.sh
 

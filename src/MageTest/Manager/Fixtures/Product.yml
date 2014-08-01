@@ -1,0 +1,14 @@
+catalog/product:
+    sku: testsku123
+    attribute_set_id: 9
+    name: product name
+    weight: 2
+    price: 100
+    description: Product description
+    short_description: Product short description
+    tax_class_id: 1
+    type_id: simple
+    visibility: 4
+    status: 1
+    stock_data: { is_in_stock: 1, qty: 99999 }
+    website_ids: [1]
