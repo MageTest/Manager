@@ -1,30 +1,71 @@
-## Manager
+Manager
+===
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MageTest/Manager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MageTest/Manager/?branch=master)
 [![Build Status](https://travis-ci.org/MageTest/Manager.svg?branch=master)](https://travis-ci.org/MageTest/Manager)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MageTest/Manager/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MageTest/Manager/?branch=master)
 
-An abstraction layer that deals with test fixtures for Magento.
+Manager is a PHP library that manages test fixtures for a Magento site.
 
-## License and Authors
+Fixtures
+---
+Manager takes YAML files as an input to create fixtures for a Magento test environment.
 
-Authors: <https://github.com/MageTest/Manager/contributors>
+A YAML file maps to a Magento model via the key of the collection. The collection then maps to the model attributes
+of the defined Magento model.
 
-Copyright (C) 2014
+Defining a model in a YAML file would look like this:
+``` yaml
+customer/customer:
+    firstname: test
+    lastname: test
+    email: customer@example.com
+    password: 123123pass
+    website_id: 1
+    store: 1
+    status: 1
+```
+The most important part, is the key in the collection. This is the argument supplied to `Mage::getModel()`.
+After we define the fixture, all we need to do now is load it into the Manager.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
+``` php
+<?php
+use MageTest\Manager\FixtureManager,
+    MageTest\Manager\Attributes\Provider\YamlProvider;
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+//init Manager and define attributes provider. Default is YAML
+$manager = new FixtureManager(new YamlProvider());
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+$yamlFile = 'src/MageTest/Manager/Fixtures/Customer.yml';
+
+//Load fixture into
+$manager->loadFixture($yamlFile);
+
+//Use key defined in fixture file, to return instance of fixture model
+$customer = $manager->getFixture('customer/customer');
+
+//Use customer model, change values/behaviour, assert data for acceptance tests
+
+//Delete all fixtures from Magento test environment DB
+$manager->clear();
+```
+Usage
+---
+This library can be used in conjunction with Behat (or any other acceptance/functional testing tool of choice).
+The flow could look something like this:
+- Instantiate Manager before the test suite.
+- Before a feature, load required model(s) for acceptance test
+- After the suite, call `clear()` to clean up fixtures.
+
+The aim is to keep the Step Defintions slim, and abstract away the DB interactions required to set up test data
+(think what Mink does as a web browser emulator abstraction).
+
+Roadmap
+---
+- Default model builder.
+- Add support for Configurable products, Bundled products
+- Handle multiple instances of the same fixture.
+- JSON, XML attribute providers.
+
+Contributors
+---
+Authors: https://github.com/MageTest/Manager/contributors
