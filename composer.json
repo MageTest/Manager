@@ -1,6 +1,6 @@
 {
     "name": "magetest/manager",
-    "description": "Magento fixture manager/generator",
+    "description": "Magento fixture manager",
     "keywords": ["fixture", "magento", "testing"],
     "type": "library",
     "license": "MIT",
@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": ">=5.3",
-        "fzaninotto/faker": "~1.0",
         "symfony/yaml": "~2.0"
     },
     "require-dev": {
