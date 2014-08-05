@@ -35,10 +35,8 @@ use MageTest\Manager\FixtureManager,
 //init Manager and define attributes provider. Default is YAML
 $manager = new FixtureManager(new YamlProvider());
 
-$yamlFile = 'src/MageTest/Manager/Fixtures/Customer.yml';
-
-//Load fixture into
-$manager->loadFixture($yamlFile);
+//Load fixture by model type into manager
+$manager->loadFixture('customer/customer');
 
 //Use key defined in fixture file, to return instance of fixture model
 $customer = $manager->getFixture('customer/customer');
@@ -52,9 +50,9 @@ Usage
 ---
 This library can be used in conjunction with Behat (or any other acceptance/functional testing tool of choice).
 The flow could look something like this:
-- Instantiate Manager before the test suite.
+- Instantiate Manager before the scenario
 - Before a feature, load required model(s) for acceptance test
-- After the suite, call `clear()` to clean up fixtures.
+- After the scenario, call `clear()` to clean up fixtures.
 
 The aim is to keep the Step Defintions slim, and abstract away the DB interactions required to set up test data
 (think what Mink does as a web browser emulator abstraction).

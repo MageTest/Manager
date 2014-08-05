@@ -1,6 +1,4 @@
 #!/usr/bin/env bash
-composer install --prefer-source
-
 # Packages
 sudo a2enmod rewrite actions fastcgi alias
 sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf

@@ -3,8 +3,9 @@ php:
   - 5.3
 
 before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y apache2 libapache2-mod-fastcgi
+  - sudo apt-get update > /dev/null
+  - sudo apt-get install -y apache2 libapache2-mod-fastcgi > /dev/null
+  - composer install --prefer-source > /dev/null
 
 before_script:
   - build/travis_setup.sh
