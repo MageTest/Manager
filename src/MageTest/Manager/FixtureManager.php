@@ -179,7 +179,7 @@ class FixtureManager
      */
     private function getDefaultFixtureTemplate($fixtureType)
     {
-        $filePath = getcwd() . '/src/MageTest/Manager/Fixtures/';
+        $filePath = __DIR__ . '/Fixtures/';
         switch($fixtureType)
         {
             case 'customer/address': return $filePath . 'Address.yml';
