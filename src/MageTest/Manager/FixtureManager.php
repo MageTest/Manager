@@ -15,6 +15,7 @@ class FixtureManager
      * @var array
      */
     private $fixtures;
+
     /**
      * @var array
      */
@@ -37,11 +38,19 @@ class FixtureManager
      * @param $fixtureFile
      * @return mixed
      */
-    public function loadFixture($fixtureFile)
+    public function loadFixture($fixtureType, $userFixtureFile = null)
     {
-        $this->fixtureFileExists($fixtureFile);
         $attributesProvider = clone $this->attributesProvider;
-        $attributesProvider->readFile($fixtureFile);
+
+        if(!is_null($userFixtureFile))
+        {
+            $this->fixtureFileExists($userFixtureFile);
+            $attributesProvider->readFile($userFixtureFile);
+        } else {
+            $fixtureFile = $this->getDefaultFixtureTemplate($fixtureType);
+            $this->fixtureFileExists($fixtureFile);
+            $attributesProvider->readFile($fixtureFile);
+        }
 
         $builder = $this->getBuilder($attributesProvider->getModelType());
         $builder->setAttributes($attributesProvider->readAttributes());
@@ -51,11 +60,7 @@ class FixtureManager
             foreach($attributesProvider->getFixtureDependencies() as $dependency)
             {
                 $withDependency = 'with' . $this->getFixtureTemplate($dependency);
-                $builder->$withDependency($this->loadFixture(
-                    getcwd() . '/src/MageTest/Manager/Fixtures/'
-                    . $this->getFixtureTemplate($dependency)
-                    . $this->attributesProvider->getFileType()
-                ));
+                $builder->$withDependency($this->loadFixture($dependency));
             }
         }
 
@@ -166,5 +171,21 @@ class FixtureManager
     {
         $fixtureTemplate = explode('/', $dependency);
         return ucfirst($fixtureTemplate[1]);
+    }
+
+    /**
+     * @param $fixtureType
+     * @return string
+     */
+    private function getDefaultFixtureTemplate($fixtureType)
+    {
+        $filePath = getcwd() . '/src/MageTest/Manager/Fixtures/';
+        switch($fixtureType)
+        {
+            case 'customer/address': return $filePath . 'Address.yml';
+            case 'customer/customer': return $filePath . 'Customer.yml';
+            case 'catalog/product': return $filePath . 'Product.yml';
+            case 'sales/quote': return $filePath . 'Order.yml';
+        }
     }
 }

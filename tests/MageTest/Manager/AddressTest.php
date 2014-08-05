@@ -8,8 +8,7 @@ class AddressTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Address.yml';
-        $this->addressFixture = $this->manager->loadFixture($fixture);
+        $this->addressFixture = $this->manager->loadFixture('customer/address');
     }
 
     public function testAssignAddressToCustomer()

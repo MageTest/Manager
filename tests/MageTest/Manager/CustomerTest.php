@@ -25,27 +25,35 @@ class CustomerTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Customer.yml';
-        $this->customerFixture = $this->manager->loadFixture($fixture);
     }
 
-    public function testCreatesCustomer()
+    public function testCreatesCustomerDefault()
     {
-        $this->customerFixture = $this->manager->getFixture('customer/customer');
+        $this->customerFixture = $this->manager->loadFixture('customer/customer');
 
         $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/');
     }
 
-    public function testDeletesCustomer()
+    public function testDeletesCustomerDefault()
     {
-        $this->customerFixture = $this->manager->getFixture('customer/customer');
+        $this->customerFixture = $this->manager->loadFixture('customer/customer');
 
         $this->manager->clear();
 
         $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
         $this->assertSession()->addressEquals('/customer/account/login/');
+    }
+
+    public function testCreatesUserDefinedCustomer()
+    {
+        $this->customerFixture = $this->manager->loadFixture('customer/customer',
+            getcwd() . '/tests/MageTest/Manager/Fixtures/Customer.yml');
+
+        $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
+
+        $this->assertSession()->addressEquals('/customer/account/');
     }
 }

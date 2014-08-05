@@ -1,8 +1,6 @@
 <?php
 namespace MageTest\Manager;
 
-use MageTest\Manager\Attributes\Provider\YamlProvider;
-
 class ProductTest extends WebTestCase
 {
     private $productFixture;
@@ -10,8 +8,7 @@ class ProductTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Product.yml';
-        $this->productFixture = $this->manager->loadFixture($fixture);
+        $this->productFixture = $this->manager->loadFixture('catalog/product');
     }
 
     public function testCreateSimpleProduct()
