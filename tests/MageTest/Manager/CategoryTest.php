@@ -25,11 +25,20 @@ class CategoryTest extends WebTestCase
         parent::setUp();
     }
 
-    public function testCreateCategory()
+    public function testCreateCategoryViaId()
     {
         $categoryFixture = $this->manager->loadFixture('catalog/category', __DIR__ . '/Fixtures/Category.yml');
 
         $this->getSession()->visit(getenv('BASE_URL') . '/catalog/category/view/id/' . $categoryFixture->getId());
+
+        $this->assertSession()->statusCodeEquals(200);
+    }
+
+    public function testCreateCategoryViaUrlKey()
+    {
+        $categoryFixture = $this->manager->loadFixture('catalog/category', __DIR__ . '/Fixtures/Category.yml');
+
+        $this->getSession()->visit(getenv('BASE_URL') . '/' . $categoryFixture->getUrlKey() . '.html');
 
         $this->assertSession()->statusCodeEquals(200);
     }
