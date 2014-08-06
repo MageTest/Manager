@@ -8,8 +8,7 @@ class OrderTest extends WebTestCase
     protected function setUp()
     {
         parent::setUp();
-        $fixture = getcwd() . '/src/MageTest/Manager/Fixtures/Order.yml';
-        $this->orderFixture = $this->manager->loadFixture($fixture);
+        $this->orderFixture = $this->manager->loadFixture('sales/quote');
     }
 
     public function testCreateOrderWithOneProduct()

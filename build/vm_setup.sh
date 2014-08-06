@@ -7,7 +7,7 @@ sudo apt-get update
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password password root'
 sudo debconf-set-selections <<< 'mysql-server mysql-server/root_password_again password root'
 
-sudo apt-get install -y curl apache2 libapache2-mod-fastcgi php5 php5-fpm php5-cli php5-curl php5-gd php5-mcrypt php5-mysql mysql-server
+sudo apt-get install -y curl apache2 libapache2-mod-fastcgi php5 php5-fpm php5-cli php5-curl php5-gd php5-mcrypt php5-mysql phpt5-xdebug mysql-server
 
 sudo sed -i "s/error_reporting = .*/error_reporting = E_ALL/" /etc/php5/fpm/php.ini
 sudo sed -i "s/display_errors = .*/display_errors = On/" /etc/php5/fpm/php.ini
@@ -40,6 +40,15 @@ sudo echo "<VirtualHost *:80>
   </IfModule>
 
 </VirtualHost>" | sudo tee /etc/apache2/sites-available/default > /dev/null
+
+sudo bash -c "cat >> /etc/php5/conf.d/xdebug.ini <<EOF
+xdebug.default_enable = 1
+xdebug.remote_autostart = 1
+xdebug.remote_connect_back = 1
+xdebug.remote_enable = 1
+xdebug.remote_handler = "dbgp"
+xdebug.remote_port = 9000
+EOF"
 
 sudo service apache2 restart
 sudo service php5-fpm restart
