@@ -149,6 +149,7 @@ class FixtureManager
             case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer($modelType);
             case 'catalog/product': return $this->builders[$modelType] = new Builders\Product($modelType);
             case 'sales/quote': return $this->builders[$modelType] = new Builders\Order($modelType);
+            default : return $this->builders[$modelType] = new Builders\General($modelType);
         }
     }
 

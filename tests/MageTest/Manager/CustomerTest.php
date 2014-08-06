@@ -49,8 +49,7 @@ class CustomerTest extends WebTestCase
 
     public function testCreatesUserDefinedCustomer()
     {
-        $this->customerFixture = $this->manager->loadFixture('customer/customer',
-            getcwd() . '/tests/MageTest/Manager/Fixtures/Customer.yml');
+        $this->customerFixture = $this->manager->loadFixture('customer/customer', __DIR__ . '/Fixtures/Customer.yml');
 
         $this->customerLogin($this->customerFixture->getEmail(), $this->customerFixture->getPassword());
 
