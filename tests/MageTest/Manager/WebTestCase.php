@@ -59,17 +59,16 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
     }
 
     /**
-     * @param $email
+     * @param $username
      * @param $pass
      *
-     * Using credentials set in build scripts that match vm/travis setup.
      */
-    protected function adminLogin()
+    protected function adminLogin($username, $pass)
     {
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/admin');
-        $session->getPage()->fillField('login[username]', 'admin');
-        $session->getPage()->fillField('login[password]', 'adminadmin123123');
+        $session->getPage()->fillField('username', $username);
+        $session->getPage()->fillField('login', $pass);
         $session->getPage()->pressButton('Login');
     }
 
