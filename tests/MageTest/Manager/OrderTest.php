@@ -13,7 +13,7 @@ class OrderTest extends WebTestCase
 
     public function testCreateOrderWithOneProduct()
     {
-        $this->adminLogin();
+        $this->adminLogin('admin', 'adminadmin123123');
 
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/admin/sales_order/index');
@@ -24,7 +24,7 @@ class OrderTest extends WebTestCase
     {
         $this->manager->clear();
 
-        $this->adminLogin();
+        $this->adminLogin('admin', 'adminadmin123123');
 
         $session = $this->getSession();
         $session->visit(getenv('BASE_URL') . '/admin/sales_order/index');
