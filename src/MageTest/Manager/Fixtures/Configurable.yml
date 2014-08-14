@@ -1,0 +1,35 @@
+catalog/product/configurable:
+  default_attributes:
+    sku: test-conf
+    attribute_set_id: 9
+    name: product name
+    weight: 2
+    price: 100
+    description: Product description
+    short_description: Product short description
+    tax_class_id: 4
+    type_id: configurable
+    visibility: 4
+    status: 1
+    stock_data: { use_config_manage_stock: 0, manage_stock: 1, is_in_stock: 1 }
+    website_ids: [1]
+  simple_product_attributes:
+    website_ids: [1]
+    attribute_set_id: 9
+    name: product name
+    tax_class_id: 4
+    status: 1
+    weight: 2
+    price: 100
+    description: Product description
+    short_description: Product short description
+    type_id: simple
+    visibility: 1
+    stock_data: { use_config_manage_stock: 0, manage_stock: 1, min_sale_qty: 1, max_sale_qty: 2, is_in_stock: 1, qty: 999 }
+  configurable_attributes:
+      test-conf-1:
+        color: Green
+      test-conf-2:
+        color: Blue
+      test-conf-3:
+        color: Black

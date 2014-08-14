@@ -52,8 +52,11 @@ class FixtureManager
             $attributesProvider->readFile($fixtureFile);
         }
 
+        $attributes = $attributesProvider->readAttributes();
+
         $builder = $this->getBuilder($attributesProvider->getModelType());
-        $builder->setAttributes($attributesProvider->readAttributes());
+
+        $builder->setAttributes($attributes);
 
         if($attributesProvider->hasFixtureDependencies())
         {
@@ -64,7 +67,7 @@ class FixtureManager
             }
         }
 
-        return $this->create($attributesProvider->getModelType(), $builder);
+        return $this->create($builder);
     }
 
     /**
@@ -73,34 +76,25 @@ class FixtureManager
      * @return mixed
      * @throws \InvalidArgumentException
      */
-    public function create($name, BuilderInterface $builder)
+    public function create(BuilderInterface $builder)
     {
-        if($this->hasFixture($name))
-        {
-            throw new \InvalidArgumentException("Fixture $name has already been set. Please use unique names.");
-        }
-
         $model = $builder->build();
 
+        $savedCurrentStoreId = \Mage::app()->getStore()->getId();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->save();
-        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
+        \Mage::app()->setCurrentStore($savedCurrentStoreId);
 
-        return $this->fixtures[$name] = $model;
-    }
-
-    /**
-     * @param $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     */
-    public function getFixture($name)
-    {
-        if(!$this->hasFixture($name))
+        if($model->getTypeId() === \Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
         {
-            throw new \InvalidArgumentException("Could not find a fixture: $name");
+            $childProducts = \Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $model);
+            foreach($childProducts as $product)
+            {
+                $this->fixtures[] = $product;
+            }
         }
-        return $this->fixtures[$name];
+
+        return $this->fixtures[] = $model;
     }
 
     /**
@@ -117,38 +111,18 @@ class FixtureManager
     }
 
     /**
-     * @param $name
-     * @return bool
-     */
-    private function hasFixture($name) {
-        return array_key_exists($name, $this->fixtures);
-    }
-
-    /**
-     * @param $name
-     * @return bool
-     */
-    private function hasBuilder($name) {
-        return array_key_exists($name, $this->builders);
-    }
-
-    /**
      * @param $modelType
      * @return Builders\Address|Builders\Customer|Builders\Order|Builders\Product
      */
     private function getBuilder($modelType)
     {
-        if($this->hasBuilder($modelType))
-        {
-            return $this->builders[$modelType];
-        }
-
         switch($modelType)
         {
-            case 'customer/address': return $this->builders[$modelType] = new Builders\Address($modelType);
-            case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer($modelType);
-            case 'catalog/product': return $this->builders[$modelType] = new Builders\Product($modelType);
-            case 'sales/quote': return $this->builders[$modelType] = new Builders\Order($modelType);
+            case 'customer/address': return new Builders\Address($modelType);
+            case 'customer/customer': return new Builders\Customer($modelType);
+            case 'catalog/product/simple': return new Builders\Product('catalog/product');
+            case 'catalog/product/configurable': return new Builders\Configurable('catalog/product');
+            case 'sales/quote': return new Builders\Order($modelType);
         }
     }
 
@@ -184,7 +158,8 @@ class FixtureManager
         {
             case 'customer/address': return $filePath . 'Address.yml';
             case 'customer/customer': return $filePath . 'Customer.yml';
-            case 'catalog/product': return $filePath . 'Product.yml';
+            case 'catalog/product/simple' : return $filePath . 'Product.yml';
+            case 'catalog/product/configurable' : return $filePath . 'Configurable.yml';
             case 'sales/quote': return $filePath . 'Order.yml';
         }
     }

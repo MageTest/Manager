@@ -1,4 +1,4 @@
-catalog/product:
+catalog/product/simple:
     sku: testsku123
     attribute_set_id: 9
     name: product name
@@ -10,5 +10,6 @@ catalog/product:
     type_id: simple
     visibility: 4
     status: 1
-    stock_data: { is_in_stock: 1, qty: 99999 }
+    media_gallery: { images: [], values: [] }
+    stock_data: { use_config_manage_stock: 0, manage_stock: 1, is_in_stock: 1, qty: 999}
     website_ids: [1]

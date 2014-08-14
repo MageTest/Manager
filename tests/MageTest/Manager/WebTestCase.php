@@ -23,7 +23,7 @@ abstract class WebTestCase extends PHPUnit_Framework_Testcase
 
     protected function setUp()
     {
-        \Mage::init();
+        \Mage::app();
         $this->mink = new Mink(array(
             'goutte' => new Session(new GoutteDriver())
         ));

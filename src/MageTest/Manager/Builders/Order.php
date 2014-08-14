@@ -17,7 +17,10 @@ class Order extends AbstractBuilder implements BuilderInterface
      */
     public function withProduct($product, $qty = 1)
     {
-        $this->model->addProduct($product, new \Varien_Object(array(
+        $newProd = Mage::getModel('catalog/product');
+        $newProd->load($newProd->getIdBySku($product->getSku()));
+
+        $this->model->addProduct($newProd, new \Varien_Object(array(
             'qty' => $qty
         )));
         return $this;

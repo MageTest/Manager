@@ -20,7 +20,7 @@ class YamlProvider implements ProviderInterface
      */
     public function readFile($file)
     {
-        $this->yaml = Yaml::parse($file);
+        return $this->yaml = Yaml::parse($file);
     }
 
     /**

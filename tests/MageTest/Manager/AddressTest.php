@@ -13,18 +13,20 @@ class AddressTest extends WebTestCase
 
     public function testAssignAddressToCustomer()
     {
-        $customer = $this->manager->getFixture('customer/customer');
+        $customer = $this->addressFixture->getCustomer();
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        //hard coded due to hashing
+        $this->customerLogin($customer->getEmail(), '123123pass');
 
         $this->assertSession()->pageTextContains($this->addressFixture->getPostcode());
     }
 
     public function testDeleteAddressOfCustomer()
     {
-        $customer = $this->manager->getFixture('customer/customer');
+        $customer = $this->addressFixture->getCustomer();
 
-        $this->customerLogin($customer->getEmail(), $customer->getPassword());
+        //hard coded due to hashing
+        $this->customerLogin($customer->getEmail(), '123123pass');
 
         $this->manager->clear();
 
