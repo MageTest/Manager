@@ -25,6 +25,11 @@ class Configurable extends AbstractBuilder implements BuilderInterface
             $simpleProduct->addData($this->attributes['simple_product_attributes']);
             $simpleProduct->setSku($sku);
 
+            if(isset($attributes['price'])){
+                $simpleProduct->setPrice($attributes['price']);
+                unset($attributes['price']);
+            }
+
             $childAttributes = array();
 
             foreach($attributes as $attributeCode => $value)
