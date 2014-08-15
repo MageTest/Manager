@@ -80,19 +80,9 @@ class FixtureManager
     {
         $model = $builder->build();
 
-        $savedCurrentStoreId = \Mage::app()->getStore()->getId();
         \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
         $model->save();
-        \Mage::app()->setCurrentStore($savedCurrentStoreId);
-
-        if($model->getTypeId() === \Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE)
-        {
-            $childProducts = \Mage::getModel('catalog/product_type_configurable')->getUsedProducts(null, $model);
-            foreach($childProducts as $product)
-            {
-                $this->fixtures[] = $product;
-            }
-        }
+        \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
 
         return $this->fixtures[] = $model;
     }
@@ -104,9 +94,16 @@ class FixtureManager
     {
         foreach ($this->fixtures as $fixture) {
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::ADMIN_STORE_ID);
+
+            if ($fixture->getTypeId() === \Mage_Catalog_Model_Product_Type::TYPE_CONFIGURABLE) {
+                $this->clearAssociatedProducts($fixture);
+            }
+
             $fixture->delete();
+
             \Mage::app()->setCurrentStore(\Mage_Core_Model_App::DISTRO_STORE_ID);
         }
+
         $this->fixtures = array();
     }
 
@@ -161,6 +158,20 @@ class FixtureManager
             case 'catalog/product/simple' : return $filePath . 'Product.yml';
             case 'catalog/product/configurable' : return $filePath . 'Configurable.yml';
             case 'sales/quote': return $filePath . 'Order.yml';
+        }
+    }
+
+    /**
+     * @param $fixture
+     */
+    private function clearAssociatedProducts($fixture)
+    {
+        $childIds = $fixture->getTypeInstance()->getChildrenIds($fixture->getId());
+
+        foreach ($childIds[0] as $value) {
+            $product = \Mage::getModel('catalog/product')->load($value);
+            $product->delete();
+            $product->clearInstance();
         }
     }
 }
