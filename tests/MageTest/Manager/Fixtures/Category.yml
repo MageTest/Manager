@@ -1,0 +1,9 @@
+#creates root catalog (id=3) therefore path=1/3
+catalog/category:
+    name: Test Category
+    url_key: test-category
+    path: 1/3
+    is_active: 1
+    is_anchor: 1
+    include_in_menu: 1
+    display_mode: PRODUCTS
