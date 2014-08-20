@@ -1,0 +1,6 @@
+admin/user:
+    username: testadmin
+    firstname: admin
+    lastname: admin
+    email: testadmin@example.com
+    password: testadmin123

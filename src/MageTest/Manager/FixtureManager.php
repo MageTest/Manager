@@ -145,6 +145,7 @@ class FixtureManager
 
         switch($modelType)
         {
+            case 'admin/user': return $this->builders[$modelType] = new Builders\Admin($modelType);
             case 'customer/address': return $this->builders[$modelType] = new Builders\Address($modelType);
             case 'customer/customer': return $this->builders[$modelType] = new Builders\Customer($modelType);
             case 'catalog/product': return $this->builders[$modelType] = new Builders\Product($modelType);
@@ -182,6 +183,7 @@ class FixtureManager
         $filePath = __DIR__ . '/Fixtures/';
         switch($fixtureType)
         {
+            case 'admin/user': return $filePath . 'Admin.yml';
             case 'customer/address': return $filePath . 'Address.yml';
             case 'customer/customer': return $filePath . 'Customer.yml';
             case 'catalog/product': return $filePath . 'Product.yml';
