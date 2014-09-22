@@ -13,6 +13,7 @@ class Product extends AbstractBuilder implements BuilderInterface
      */
     public function build()
     {
+        $this->model->setStockItem(\Mage::getModel('cataloginventory/stock_item'));
         return $this->model->addData($this->attributes);
     }
 }
