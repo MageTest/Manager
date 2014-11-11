@@ -38,7 +38,7 @@ class FixtureManager
      * @param $fixtureFile
      * @return mixed
      */
-    public function loadFixture($fixtureType, $userFixtureFile = null)
+    public function loadFixture($fixtureType, $userFixtureFile = null, $overrideAttributes = null)
     {
         $attributesProvider = clone $this->attributesProvider;
 
@@ -52,8 +52,14 @@ class FixtureManager
             $attributesProvider->readFile($fixtureFile);
         }
 
+        $modelAttributes = $attributesProvider->readAttributes();
+
+        if(!is_null($overrideAttributes)) {
+            $modelAttributes = array_replace($attributesProvider->readAttributes(), $overrideAttributes);
+        }
+
         $builder = $this->getBuilder($attributesProvider->getModelType());
-        $builder->setAttributes($attributesProvider->readAttributes());
+        $builder->setAttributes($modelAttributes);
 
         if($attributesProvider->hasFixtureDependencies())
         {
