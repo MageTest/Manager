@@ -55,7 +55,7 @@ class FixtureManager
         $modelAttributes = $attributesProvider->readAttributes();
 
         if(!is_null($overrideAttributes)) {
-            $modelAttributes = array_replace($attributesProvider->readAttributes(), $overrideAttributes);
+            $modelAttributes = array_replace($modelAttributes, $overrideAttributes);
         }
 
         $builder = $this->getBuilder($attributesProvider->getModelType());
